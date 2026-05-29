@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>FIFA World Cup 2026 – Prode</title>
+<link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/250/250618.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;900&family=Oswald:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#C9A84C;--gold-l:#F0D080;--gold-d:#8B6914;--black:#080808;--white:#F2F2F2;--gray:#181818;--gray2:#222;--gray3:#333;--muted:#777;--green:#1a7a3a;--red:#7a1a1a;--green-b:rgba(26,122,58,.18);--red-b:rgba(122,26,26,.18)}
@@ -224,6 +225,18 @@ header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;bac
 .cd-btn:hover{background:var(--gold-l)}
 .cd-started{font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:4px;color:var(--gold);animation:champP 1.5s ease-in-out infinite}
 
+/* ── CONFIRM MODAL ── */
+#confirm-modal{display:none;position:fixed;inset:0;z-index:450;background:rgba(0,0,0,.8);align-items:center;justify-content:center}
+#confirm-modal.on{display:flex}
+.confirm-box{background:var(--gray);border:1px solid #633;padding:28px 32px;max-width:360px;width:88vw;text-align:center}
+.confirm-box h3{font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:4px;color:#e66;margin-bottom:10px}
+.confirm-box p{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:22px;font-family:'Montserrat',sans-serif}
+.confirm-btns{display:flex;gap:10px;justify-content:center}
+.confirm-yes{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;padding:9px 22px;background:#c44;color:var(--white);border:none;cursor:pointer;transition:all .2s}
+.confirm-yes:hover{background:#e55}
+.confirm-no{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;padding:9px 22px;background:transparent;color:var(--muted);border:1px solid var(--gray3);cursor:pointer;transition:all .2s}
+.confirm-no:hover{color:var(--white);border-color:var(--muted)}
+
 ::-webkit-scrollbar{width:5px;height:5px}
 /* ── FB LOADING OVERLAY ── */
 #fb-loading{display:none;position:fixed;inset:0;z-index:600;background:rgba(8,8,8,.92);align-items:center;justify-content:center;flex-direction:column;gap:14px}
@@ -240,6 +253,16 @@ header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;bac
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
+<div id="confirm-modal">
+  <div class="confirm-box">
+    <h3>🗑 VACIAR PRODE</h3>
+    <p>¿Seguro que querés vaciar todo tu prode?<br>Los cambios <strong>no guardados</strong> se perderán.<br>Si guardaste antes, podés volver a ingresar.</p>
+    <div class="confirm-btns">
+      <button class="confirm-no"  id="confirm-no-btn">Cancelar</button>
+      <button class="confirm-yes" id="confirm-yes-btn">Sí, vaciar</button>
+    </div>
+  </div>
+</div>
 <div id="countdown-modal">
   <div class="cd-box">
     <button class="cd-close" id="cd-close-btn">✕</button>
@@ -675,6 +698,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('save-grupos-btn').addEventListener('click', saveGrupos);
   document.getElementById('save-llaves-btn').addEventListener('click', saveLlaves);
   document.getElementById('clear-prode-btn').addEventListener('click', clearProde);
+  document.getElementById('confirm-yes-btn').addEventListener('click', doClearProde);
+  document.getElementById('confirm-no-btn').addEventListener('click', cancelClearProde);
 
   // Go to prode tab
   document.getElementById('goto-prode-btn').addEventListener('click', function(){
@@ -963,13 +988,32 @@ function clearProde() {
     showToast('⛔ El administrador cerró las predicciones.');
     return;
   }
-  if (!confirm('¿Seguro que querés vaciar todo tu prode? Los cambios no guardados se perderán.')) return;
-  initUserGroupScores();     // reset scores in memory
-  userKO = buildEmptyKO();   // reset bracket in memory
-  renderGroups();            // re-render (but NOT saved to storage)
+  const modal = document.getElementById('confirm-modal');
+  if (modal) modal.classList.add('on');
+}
+
+function doClearProde() {
+  const modal = document.getElementById('confirm-modal');
+  if (modal) modal.classList.remove('on');
+
+  // Reset scores to empty directly — NOT via initUserGroupScores()
+  // because that function re-reads from storage[currentUser] (the Firestore cache)
+  userGroupScores = {};
+  Object.keys(GROUPS_DEF).forEach(g => {
+    userGroupScores[g] = GROUPS_DEF[g].matches.map(() => ({hs:'', as:''}));
+  });
+  userKO = buildEmptyKO();
+
+  renderGroups();
   buildBracketFromGroups();
   renderBracket(userKO);
   showToast('Prode vaciado — recordá guardar si querés conservar los cambios.');
+}
+
+function cancelClearProde() {
+  console.log('[cancelClearProde] called');
+  const modal = document.getElementById('confirm-modal');
+  if (modal) modal.classList.remove('on');
 }
 
 // ── ADMIN LOCK ───────────────────────────────────────────────────────────
