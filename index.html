@@ -55,16 +55,42 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
 .app-layout{display:flex;gap:0;min-height:calc(100vh - 500px)}
 
 /* ── SIDEBAR (always visible leaderboard) ── */
-.sidebar{
-  width:var(--sidebar-w);flex-shrink:0;
-  background:var(--gray);
-  border-left:1px solid var(--gray3);
-  padding:16px 14px;
-  position:sticky;top:0;height:calc(100vh - 500px);
-  overflow-y:auto;
+/* Sidebar wrapper holds the pill + the panel */
+.sidebar-wrap{
+  position:sticky;top:0;
+  height:calc(100vh - 500px);
+  display:flex;align-items:center;justify-content:flex-end;
+  flex-shrink:0;
+  align-self:flex-start;
 }
+.sidebar{
+  width:var(--sidebar-w);
+  background:var(--gray);
+  border:1px solid var(--gray3);
+  border-radius:6px 0 0 6px;
+  padding:16px 14px;
+  max-height:80vh;
+  overflow-y:auto;
+  transition:width .22s,padding .22s,opacity .22s;
+}
+.sidebar-wrap.collapsed .sidebar{width:0;padding:0;overflow:hidden;border:none;opacity:0}
+/* Toggle pill: floats on left edge of sidebar-wrap, vertically centered */
+.sidebar-toggle-pill{
+  width:18px;height:40px;flex-shrink:0;
+  background:var(--gray);
+  border:1px solid var(--gray3);border-right:none;
+  color:var(--gold-d);font-size:.7rem;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:4px 0 0 4px;
+  align-self:center;
+}
+.sidebar-toggle-pill:hover{color:var(--gold);background:var(--gray2);border-color:var(--gold-d)}
 .sidebar-title{font-family:'Bebas Neue',cursive;font-size:1rem;letter-spacing:4px;color:var(--gold);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--gold-d);display:flex;align-items:center;gap:8px}
-.sidebar-title::before{content:'🏆';font-size:.9rem}
+.sidebar-title-left{display:flex;align-items:center;gap:8px}
+.sidebar-title-left::before{content:'🏆';font-size:.9rem}
+.sidebar-title{font-family:'Bebas Neue',cursive;font-size:1rem;letter-spacing:4px;color:var(--gold);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--gold-d);display:flex;align-items:center;gap:8px}
+
 .lb-row{display:flex;align-items:center;gap:8px;padding:8px 8px;border-bottom:1px solid var(--gray3);transition:background .2s;font-size:.72rem}
 .lb-row:last-child{border-bottom:none}
 .lb-row.me{background:rgba(201,168,76,.08);border-left:3px solid var(--gold)}
@@ -299,13 +325,43 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
 .login-hint{font-size:.62rem;color:var(--muted);text-align:center;font-family:'Oswald',sans-serif;letter-spacing:1px;line-height:1.6}
 
 /* ── SCROLLBAR ── */
+/* ── CHAT ── */
+#chat-bubble{position:fixed;bottom:24px;right:24px;z-index:300}
+.chat-fab{width:52px;height:52px;border-radius:50%;background:var(--gold);border:none;color:var(--black);font-size:1.3rem;cursor:pointer;box-shadow:0 4px 20px rgba(201,168,76,.4);transition:all .2s;display:flex;align-items:center;justify-content:center;position:relative}
+.chat-fab:hover{background:var(--gold-l);transform:scale(1.06)}
+.chat-unread{position:absolute;top:-4px;right:-4px;background:#e44;color:#fff;font-size:.55rem;font-family:'Oswald',sans-serif;min-width:18px;height:18px;border-radius:9px;padding:0 4px;display:none;align-items:center;justify-content:center;font-weight:700}
+.chat-unread.on{display:flex}
+.chat-panel{position:absolute;bottom:64px;right:0;width:310px;background:var(--gray2);border:1px solid var(--gray3);border-radius:6px;box-shadow:0 8px 32px rgba(0,0,0,.6);display:none;flex-direction:column;overflow:hidden;animation:chatIn .2s ease}
+@keyframes chatIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.chat-panel.open{display:flex}
+.chat-hdr{background:var(--gray3);padding:9px 12px;display:flex;align-items:center;justify-content:space-between;font-family:'Oswald',sans-serif;font-size:.78rem;letter-spacing:2px;color:var(--gold);border-bottom:1px solid var(--gray3)}
+.chat-x{background:none;border:none;color:var(--muted);font-size:1rem;cursor:pointer}
+.chat-x:hover{color:var(--white)}
+.chat-msgs{height:260px;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px}
+.chat-msg{display:flex;flex-direction:column;gap:1px}
+.chat-meta{display:flex;align-items:center;gap:5px}
+.chat-u{font-family:'Oswald',sans-serif;font-size:.63rem;letter-spacing:1px;color:var(--gold)}
+.chat-u.adm{color:#e88}
+.chat-t{font-size:.54rem;color:var(--muted)}
+.chat-txt{font-size:.75rem;color:var(--white);line-height:1.4;word-break:break-word}
+.chat-msg.own .chat-txt{color:var(--gold-l)}
+.chat-del{background:none;border:none;color:#633;font-size:.62rem;cursor:pointer;margin-left:auto;display:none}
+.chat-msg:hover .chat-del{display:block}
+.chat-del:hover{color:#e44}
+.chat-empty{color:var(--muted);font-size:.7rem;font-family:'Oswald',sans-serif;text-align:center;padding:20px 0}
+.chat-row{display:flex;gap:5px;padding:7px 9px;border-top:1px solid var(--gray3)}
+.chat-in{flex:1;background:var(--gray3);border:1px solid var(--gray4);color:var(--white);padding:6px 9px;font-size:.76rem;outline:none;border-radius:3px;font-family:'Montserrat',sans-serif}
+.chat-in:focus{border-color:var(--gold)}
+.chat-in::placeholder{color:var(--muted)}
+.chat-btn{background:var(--gold);color:var(--black);border:none;padding:6px 10px;cursor:pointer;font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:1px;border-radius:3px;flex-shrink:0}
+.chat-btn:hover{background:var(--gold-l)}
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:var(--black)}
 ::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:3px}
 
 @media(max-width:900px){
   .app-layout{flex-direction:column}
-  .sidebar{width:100%;height:auto;position:static;border-left:none;border-top:1px solid var(--gold-d)}
+  .sidebar-wrap{flex-direction:column}.sidebar{width:100%!important;height:auto;position:static;border-left:none;border-top:1px solid var(--gold-d)}.sidebar-toggle-pill{display:none}
   .hero-user{right:16px;top:12px}
   .hero-title-bar{padding:12px 16px 14px}
   .main-area{padding:0 16px 40px}
@@ -398,7 +454,6 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
     <div id="tab-grupos" class="tab-panel active">
       <div class="gold-div"></div>
       <div class="controls">
-        <button class="btn btn-gold" id="goto-prode-btn">✎ Ir a mi Prode</button>
         <button class="btn btn-green" id="save-grupos-btn">💾 Guardar Fase de Grupos</button>
         <button class="btn btn-danger" id="clear-prode-btn">🗑 Vaciar mi Prode</button>
       </div>
@@ -449,12 +504,28 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
       </div><!-- /content -->
     </div><!-- /main-area -->
     <!-- SIDEBAR: always-visible leaderboard -->
-    <aside class="sidebar">
-      <div class="sidebar-title">Tabla</div>
-      <div id="sidebar-tabla"><div class="sidebar-loading">Cargando...</div></div>
-    </aside>
+    <div class="sidebar-wrap" id="sidebar-wrap">
+      <button class="sidebar-toggle-pill" id="sidebar-toggle-btn" onclick="toggleSidebar()" title="Ocultar tabla">◀</button>
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-title">
+          <span class="sidebar-title-left">Tabla</span>
+        </div>
+        <div id="sidebar-tabla"><div class="sidebar-loading">Cargando...</div></div>
+      </aside>
+    </div>
   </div><!-- /app-layout -->
 </div><!-- /app -->
+<div id="chat-bubble">
+  <div class="chat-panel" id="chat-panel">
+    <div class="chat-hdr"><span>💬 CHAT DEL PRODE</span><button class="chat-x" id="chat-x">✕</button></div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-row">
+      <input class="chat-in" id="chat-in" type="text" placeholder="Escribí algo..." maxlength="200" autocomplete="off">
+      <button class="chat-btn" id="chat-send">Enviar</button>
+    </div>
+  </div>
+  <button class="chat-fab" id="chat-fab">💬<span class="chat-unread" id="chat-badge"></span></button>
+</div>
 <div class="save-toast" id="save-toast">¡Prode guardado!</div>
 <script>
 const FLAGS={
@@ -785,10 +856,30 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('confirm-yes-btn').addEventListener('click', doClearProde);
   document.getElementById('confirm-no-btn').addEventListener('click', cancelClearProde);
 
+  // ── AUTO-RESTORE SESSION ──
+  (async function() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('wc2026_session') || 'null');
+      if (!saved || !saved.name) return;
+      fbShow('Restaurando sesión...');
+      const snap = await db.collection('users').doc(saved.name).get();
+      if (!snap.exists) { localStorage.removeItem('wc2026_session'); fbHide(); return; }
+      const data = snap.data();
+      isAdmin = data.isAdmin || false;
+      storage[saved.name] = { scores: data.scores||{}, ko: data.ko||{} };
+      try {
+        const rSnap = await db.collection('config').doc('realResults').get();
+        if (rSnap.exists) realResults = rSnap.data().groups || {};
+        const lSnap = await db.collection('config').doc('app').get();
+        if (lSnap.exists) window._appLocked = lSnap.data().locked || false;
+      } catch(e) {}
+      fbHide();
+      loginSuccess(saved.name);
+      closeCountdown();
+    } catch(e) { fbHide(); localStorage.removeItem('wc2026_session'); }
+  })();
+
   // Go to prode tab
-  document.getElementById('goto-prode-btn').addEventListener('click', function(){
-    switchTab('prode', document.getElementById('tab-btn-prode'));
-  });
 
   // Tab buttons
   document.querySelectorAll('.tab-btn[data-tab]').forEach(function(btn){
@@ -809,6 +900,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loginSuccess(name) {
   currentUser = name;
+  localStorage.setItem('wc2026_session', JSON.stringify({name, isAdmin}));
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('app').classList.add('visible');
   document.getElementById('header-username').textContent = name.toUpperCase();
@@ -821,9 +913,11 @@ function loginSuccess(name) {
   renderBracket(userKO);
   // Show countdown popup after a short delay
   setTimeout(openCountdown, 600);
+  initChat();
 }
 
 function doLogout() {
+  localStorage.removeItem('wc2026_session');
   currentUser = null; isAdmin = false;
   document.getElementById('app').classList.remove('visible');
   document.getElementById('login-screen').classList.remove('hidden');
@@ -1001,6 +1095,16 @@ function saveLlaves() {
 function saveProde() {
   saveGrupos();
   saveLlaves();
+}
+
+function toggleSidebar() {
+  const wrap = document.getElementById('sidebar-wrap');
+  const btn  = document.getElementById('sidebar-toggle-btn');
+  const collapsed = wrap.classList.toggle('collapsed');
+  if (btn) {
+    btn.textContent = collapsed ? '▶' : '◀';
+    btn.title = collapsed ? 'Mostrar tabla' : 'Ocultar tabla';
+  }
 }
 
 function showToast(msg) {
@@ -1824,34 +1928,21 @@ function buildEmptyKO(){
   };
 }
 
-function bmHtml(m,koKey,idx){
-  const knownH = m.h && m.h!=='TBD' && FLAGS[m.h];
-  const knownA = m.a && m.a!=='TBD' && FLAGS[m.a];
-  const fh=knownH?`<img class="bt-flag" src="${FLAGS[m.h]}" alt="${m.h}">`:'<span style="width:16px;display:inline-block"></span>';
-  const fa=knownA?`<img class="bt-flag" src="${FLAGS[m.a]}" alt="${m.a}">`:'<span style="width:16px;display:inline-block"></span>';
-  const bothTeams = m.h && m.h!=='TBD' && m.a && m.a!=='TBD';
-  hs=parseInt(m.hs), as=parseInt(m.as);
-  const bothFilled = bothTeams && !isNaN(hs) && !isNaN(as) && m.hs!=='' && m.as!=='';
-  const isTie = bothFilled && hs===as;
-  const wh=m.winner===m.h&&m.h!=='TBD'?'winner':m.winner&&m.h!=='TBD'?'loser':'';
-  const wa=m.winner===m.a&&m.a!=='TBD'?'winner':m.winner&&m.a!=='TBD'?'loser':'';
-  // Score: input if teams known, display otherwise
-  const scoreH = bothTeams
-    ? `<input class="bt-sinput" id="bts-h-${koKey}-${idx}" type="text" inputmode="numeric" maxlength="2" value="${m.hs===undefined?'':m.hs}" placeholder="–" oninput="setBracketScore('${koKey}',${idx},'h',this.value)">`
-    : `<span class="bt-score">${m.hs!==''&&m.hs!==undefined?m.hs:''}</span>`;
-  const scoreA = bothTeams
-    ? `<input class="bt-sinput" id="bts-a-${koKey}-${idx}" type="text" inputmode="numeric" maxlength="2" value="${m.as===undefined?'':m.as}" placeholder="–" oninput="setBracketScore('${koKey}',${idx},'a',this.value)">`
-    : `<span class="bt-score">${m.as!==''&&m.as!==undefined?m.as:''}</span>`;
-  // Penalty row (only when tied)
-  const shortH = m.h&&m.h.length>9?m.h.split(' ')[0]:m.h||'';
-  const shortA = m.a&&m.a.length>9?m.a.split(' ')[0]:m.a||'';
-  const penActH = m.winner===m.h&&m.pen?'active':'';
-  const penActA = m.winner===m.a&&m.pen?'active':'';
-  const penRow = bothTeams ? `<div class="bt-pen-row" id="btpen-${koKey}-${idx}" style="display:${isTie||m.pen?'flex':'none'}"><span class="pen-lbl">PEN:</span><button class="pen-btn ${penActH}" onclick="setBracketPenWinner('${koKey}',${idx},'h')">${shortH}</button><button class="pen-btn ${penActA}" onclick="setBracketPenWinner('${koKey}',${idx},'a')">${shortA}</button></div>` : '';
-  return `<div class="bm" id="bm-${koKey}-${idx}">
-    <div class="bt ${wh}" id="bt-h-${koKey}-${idx}">${fh}<span class="bt-name">${m.h||'TBD'}</span>${scoreH}</div>
-    <div class="bt ${wa}" id="bt-a-${koKey}-${idx}">${fa}<span class="bt-name">${m.a||'TBD'}</span>${scoreA}</div>
-    ${penRow}</div>`;
+function bmHtml(m, koKey, idx) {
+  const knownH = m.h && m.h !== 'TBD' && FLAGS[m.h];
+  const knownA = m.a && m.a !== 'TBD' && FLAGS[m.a];
+  const fh = knownH ? `<img class="bt-flag" src="${FLAGS[m.h]}" alt="${m.h}">` : '<span style="width:16px;display:inline-block"></span>';
+  const fa = knownA ? `<img class="bt-flag" src="${FLAGS[m.a]}" alt="${m.a}">` : '<span style="width:16px;display:inline-block"></span>';
+  const wh = m.winner === m.h && m.h !== 'TBD' ? 'winner' : m.winner && m.h !== 'TBD' ? 'loser' : '';
+  const wa = m.winner === m.a && m.a !== 'TBD' ? 'winner' : m.winner && m.a !== 'TBD' ? 'loser' : '';
+  const sH = m.hs !== '' && m.hs !== undefined ? m.hs : '';
+  const sA = m.as !== '' && m.as !== undefined ? m.as : '';
+  const pH = m.pen && m.winner === m.h ? `<span class="bt-pen">${m.pen}</span>` : '';
+  const pA = m.pen && m.winner === m.a ? `<span class="bt-pen">${m.pen}</span>` : '';
+  return `<div class="bm">
+    <div class="bt ${wh}">${fh}<span class="bt-name">${m.h || 'TBD'}</span><span class="bt-score">${sH}</span>${pH}</div>
+    <div class="bt ${wa}">${fa}<span class="bt-name">${m.a || 'TBD'}</span><span class="bt-score">${sA}</span>${pA}</div>
+  </div>`;
 }
 
 function makeRoundCol(label,matches,koKey){
@@ -1882,60 +1973,8 @@ function renderBracket(ko){
 }
 
 // ── BRACKET SCORE & PENALTY LOGIC ──────────────────────────────────────
-function setBracketScore(koKey, idx, side, val) {
-  m = userKO[koKey][idx];
-  if (!m) return;
-  clean = val.replace(/[^0-9]/g,'');
-  if (side==='h') m.hs = clean; else m.as = clean;
-  // Compute winner from scores
-  hs = parseInt(m.hs), as = parseInt(m.as);
-  bothFilled = !isNaN(hs) && !isNaN(as) && m.hs!=='' && m.as!=='';
-  if (bothFilled && hs !== as) {
-    const newWinner = hs > as ? m.h : m.a;
-    const changed = m.winner !== newWinner;
-    m.winner = newWinner; m.pen = null;
-    updateBracketMatchUI(koKey, idx);
-    if (changed) propagateBracketWinner(koKey, idx, newWinner);
-  } else {
-    if (!m.pen) m.winner = ''; // clear winner if tie/incomplete (unless pen set)
-    updateBracketMatchUI(koKey, idx);
-  }
-}
 
-function setBracketPenWinner(koKey, idx, side) {
-  m = userKO[koKey][idx];
-  if (!m) return;
-  hs = parseInt(m.hs), as = parseInt(m.as);
-  if (isNaN(hs) || isNaN(as) || hs !== as) return; // only valid on ties
-  newWinner = side==='h' ? m.h : m.a;
-  changed = m.winner !== newWinner;
-  m.winner = newWinner;
-  m.pen = '4-3p';
-  updateBracketMatchUI(koKey, idx);
-  if (changed) propagateBracketWinner(koKey, idx, newWinner);
-}
 
-function updateBracketMatchUI(koKey, idx) {
-  m = userKO[koKey][idx];
-  hs = parseInt(m.hs), as = parseInt(m.as);
-  bothFilled = !isNaN(hs) && !isNaN(as) && m.hs!=='' && m.as!=='';
-  isTie = bothFilled && hs === as;
-  // Update row classes
-  const rowH = document.getElementById(`bt-h-${koKey}-${idx}`);
-  const rowA = document.getElementById(`bt-a-${koKey}-${idx}`);
-  if (rowH) rowH.className = `bt ${m.winner===m.h&&m.h!=='TBD'?'winner':m.winner&&m.h!=='TBD'?'loser':''}`;
-  if (rowA) rowA.className = `bt ${m.winner===m.a&&m.a!=='TBD'?'winner':m.winner&&m.a!=='TBD'?'loser':''}`;
-  // Show/hide pen row
-  penRow = document.getElementById(`btpen-${koKey}-${idx}`);
-  if (penRow) {
-    penRow.style.display = (isTie || m.pen) ? 'flex' : 'none';
-    penRow.querySelectorAll('.pen-btn').forEach((btn,i)=>{
-      const side = i===0?'h':'a';
-      team = side==='h'?m.h:m.a;
-      btn.classList.toggle('active', m.winner===team && !!m.pen);
-    });
-  }
-}
 
 function propagateBracketWinner(koKey, idx, winner) {
   const nextMap = {r32_left:'r16_left',r16_left:'qf_left',qf_left:'sf_left',sf_left:'final',
@@ -2016,6 +2055,103 @@ function renderAll(){
   renderTabla();
   renderSidebar();
 }
+
+// ════════════════════════════════════════════════════
+//  CHAT
+// ════════════════════════════════════════════════════
+let chatUnsubscribe = null;
+let chatLastSeen = Date.now();
+let chatIsOpen = false;
+
+function initChat() {
+  document.getElementById('chat-fab').addEventListener('click', toggleChat);
+  document.getElementById('chat-x').addEventListener('click', closeChat);
+  document.getElementById('chat-send').addEventListener('click', sendChat);
+  document.getElementById('chat-in').addEventListener('keydown', e => { if(e.key==='Enter') sendChat(); });
+  subscribeChat();
+}
+
+function toggleChat() {
+  chatIsOpen = !chatIsOpen;
+  document.getElementById('chat-panel').classList.toggle('open', chatIsOpen);
+  if (chatIsOpen) {
+    chatLastSeen = Date.now();
+    document.getElementById('chat-badge').classList.remove('on');
+    document.getElementById('chat-badge').textContent = '';
+    document.getElementById('chat-in').focus();
+  }
+}
+
+function closeChat() {
+  chatIsOpen = false;
+  document.getElementById('chat-panel').classList.remove('open');
+}
+
+function subscribeChat() {
+  if (chatUnsubscribe) { chatUnsubscribe(); chatUnsubscribe = null; }
+  try {
+    chatUnsubscribe = db.collection('chat').orderBy('ts').limitToLast(60)
+      .onSnapshot(snap => {
+        renderChat(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+        if (!chatIsOpen) {
+          const newCount = snap.docs.filter(d => {
+            const t = d.data().ts;
+            return t && t.toMillis && t.toMillis() > chatLastSeen;
+          }).length;
+          const badge = document.getElementById('chat-badge');
+          if (newCount > 0) {
+            badge.textContent = newCount > 9 ? '9+' : newCount;
+            badge.classList.add('on');
+          }
+        }
+      }, () => {});
+  } catch(e) {}
+}
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderChat(msgs) {
+  const el = document.getElementById('chat-msgs');
+  if (!el) return;
+  if (!msgs.length) { el.innerHTML = '<div class="chat-empty">¡Sé el primero en escribir!</div>'; return; }
+  el.innerHTML = msgs.map(m => {
+    const own  = m.user === currentUser;
+    const adm  = m.isAdmin;
+    const time = m.ts?.toDate ? m.ts.toDate().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}) : '';
+    const del  = isAdmin ? `<button class="chat-del" onclick="deleteChat('${m.id}')">✕</button>` : '';
+    return `<div class="chat-msg${own?' own':''}">
+      <div class="chat-meta">
+        <span class="chat-u${adm?' adm':''}">${esc(m.user)}${adm?' ⚙':''}</span>
+        <span class="chat-t">${time}</span>${del}
+      </div>
+      <div class="chat-txt">${esc(m.text||'')}</div>
+    </div>`;
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+async function sendChat() {
+  if (!currentUser) return;
+  const inp = document.getElementById('chat-in');
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  try {
+    await db.collection('chat').add({
+      user: currentUser, isAdmin,
+      text,
+      ts: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch(e) { showToast('Error al enviar.'); }
+}
+
+async function deleteChat(id) {
+  if (!isAdmin) return;
+  try { await db.collection('chat').doc(id).delete(); } catch(e) {}
+}
+
 </script>
 </body>
 </html>
