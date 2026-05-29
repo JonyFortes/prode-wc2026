@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
- <meta name="version" content=2.2"> 
+ <meta name="version" content="3.2"> 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>FIFA World Cup 2026 – Prode</title>
@@ -326,12 +326,41 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
 
 /* ── SCROLLBAR ── */
 /* ── CHAT ── */
-#chat-bubble{position:fixed;bottom:24px;right:24px;z-index:300}
-.chat-fab{width:52px;height:52px;border-radius:50%;background:var(--gold);border:none;color:var(--black);font-size:1.3rem;cursor:pointer;box-shadow:0 4px 20px rgba(201,168,76,.4);transition:all .2s;display:flex;align-items:center;justify-content:center;position:relative}
-.chat-fab:hover{background:var(--gold-l);transform:scale(1.06)}
-.chat-unread{position:absolute;top:-4px;right:-4px;background:#e44;color:#fff;font-size:.55rem;font-family:'Oswald',sans-serif;min-width:18px;height:18px;border-radius:9px;padding:0 4px;display:none;align-items:center;justify-content:center;font-weight:700}
+#chat-bubble{
+  position:fixed;bottom:0;right:32px;z-index:300;
+  display:flex;flex-direction:column;align-items:stretch;
+  width:300px;
+}
+/* The bar trigger */
+.chat-fab{
+  display:flex;align-items:center;gap:10px;
+  background:var(--gray2);
+  border:1px solid var(--gold-d);border-bottom:none;
+  border-radius:6px 6px 0 0;
+  padding:9px 16px;
+  cursor:pointer;
+  transition:background .18s;
+  position:relative;
+}
+.chat-fab:hover{background:var(--gray3)}
+.chat-fab-icon{font-size:1rem;flex-shrink:0}
+.chat-fab-label{font-family:'Oswald',sans-serif;font-size:.78rem;letter-spacing:3px;color:var(--gold);flex:1;text-transform:uppercase}
+.chat-fab-arrow{font-size:.65rem;color:var(--muted);transition:transform .2s;flex-shrink:0}
+#chat-bubble.bar-open .chat-fab-arrow{transform:rotate(180deg)}
+.chat-unread{
+  background:#e44;color:#fff;font-size:.55rem;font-family:'Oswald',sans-serif;
+  min-width:18px;height:18px;border-radius:9px;padding:0 4px;
+  display:none;align-items:center;justify-content:center;font-weight:700;flex-shrink:0
+}
 .chat-unread.on{display:flex}
-.chat-panel{position:absolute;bottom:64px;right:0;width:310px;background:var(--gray2);border:1px solid var(--gray3);border-radius:6px;box-shadow:0 8px 32px rgba(0,0,0,.6);display:none;flex-direction:column;overflow:hidden;animation:chatIn .2s ease}
+/* Panel opens upward from the bar */
+.chat-panel{
+  width:100%;background:var(--gray2);
+  border:1px solid var(--gold-d);border-bottom:none;
+  display:none;flex-direction:column;overflow:hidden;
+  animation:chatIn .2s ease;
+  order:-1;
+}
 @keyframes chatIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .chat-panel.open{display:flex}
 .chat-hdr{background:var(--gray3);padding:9px 12px;display:flex;align-items:center;justify-content:space-between;font-family:'Oswald',sans-serif;font-size:.78rem;letter-spacing:2px;color:var(--gold);border-bottom:1px solid var(--gray3)}
@@ -516,6 +545,7 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
   </div><!-- /app-layout -->
 </div><!-- /app -->
 <div id="chat-bubble">
+  <!-- Panel opens upward, order:-1 puts it above the bar in flex column -->
   <div class="chat-panel" id="chat-panel">
     <div class="chat-hdr"><span>💬 CHAT DEL PRODE</span><button class="chat-x" id="chat-x">✕</button></div>
     <div class="chat-msgs" id="chat-msgs"></div>
@@ -524,7 +554,13 @@ body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-se
       <button class="chat-btn" id="chat-send">Enviar</button>
     </div>
   </div>
-  <button class="chat-fab" id="chat-fab">💬<span class="chat-unread" id="chat-badge"></span></button>
+  <!-- Bar trigger (always visible at bottom) -->
+  <button class="chat-fab" id="chat-fab">
+    <span class="chat-fab-icon">💬</span>
+    <span class="chat-fab-label">Chat del Prode</span>
+    <span class="chat-unread" id="chat-badge"></span>
+    <span class="chat-fab-arrow">▲</span>
+  </button>
 </div>
 <div class="save-toast" id="save-toast">¡Prode guardado!</div>
 <script>
@@ -2074,17 +2110,22 @@ function initChat() {
 function toggleChat() {
   chatIsOpen = !chatIsOpen;
   document.getElementById('chat-panel').classList.toggle('open', chatIsOpen);
+  document.getElementById('chat-bubble').classList.toggle('bar-open', chatIsOpen);
   if (chatIsOpen) {
     chatLastSeen = Date.now();
     document.getElementById('chat-badge').classList.remove('on');
     document.getElementById('chat-badge').textContent = '';
-    document.getElementById('chat-in').focus();
+    setTimeout(() => {
+      const inp = document.getElementById('chat-in');
+      if (inp) inp.focus();
+    }, 50);
   }
 }
 
 function closeChat() {
   chatIsOpen = false;
   document.getElementById('chat-panel').classList.remove('open');
+  document.getElementById('chat-bubble').classList.remove('bar-open');
 }
 
 function subscribeChat() {
@@ -2149,7 +2190,14 @@ async function sendChat() {
 
 async function deleteChat(id) {
   if (!isAdmin) return;
-  try { await db.collection('chat').doc(id).delete(); } catch(e) {}
+  try {
+    await db.collection('chat').doc(id).delete();
+  } catch(e) {
+    console.error('deleteChat error:', e.code, e.message);
+    if (e.code === 'permission-denied') {
+      showToast('⛔ Sin permiso. Actualizá las reglas de Firestore.');
+    }
+  }
 }
 
 </script>
