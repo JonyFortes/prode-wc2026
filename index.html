@@ -4,118 +4,169 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>FIFA World Cup 2026 – Prode</title>
-<link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/250/250618.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;900&family=Oswald:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#C9A84C;--gold-l:#F0D080;--gold-d:#8B6914;--black:#080808;--white:#F2F2F2;--gray:#181818;--gray2:#222;--gray3:#333;--muted:#777;--green:#1a7a3a;--red:#7a1a1a;--green-b:rgba(26,122,58,.18);--red-b:rgba(122,26,26,.18)}
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;900&family=Oswald:wght@300;400;600&display=swap');
+
+:root{
+  --gold:#C9A84C;--gold-l:#F0D080;--gold-d:#8B6914;
+  --black:#080808;--white:#F2F2F2;
+  --gray:#141414;--gray2:#1e1e1e;--gray3:#2a2a2a;--gray4:#333;
+  --muted:#666;--muted2:#888;
+  --green:#1a7a3a;--red:#7a1a1a;
+  --green-b:rgba(26,122,58,.18);--red-b:rgba(122,26,26,.18);
+  --accent:#C9A84C;
+  --sidebar-w:260px;
+}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--black);color:var(--white);font-family:'Montserrat',sans-serif;overflow-x:hidden}
 
-
-
-/* ── LOGIN SCREEN ── */
-#login-screen{position:fixed;inset:0;z-index:500;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
-#login-screen.hidden{display:none}
-.login-logo{height:110px;animation:logoPulse 4s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(201,168,76,.5));margin-bottom:16px}
+/* ── BANNER ── */
+#hero-banner{
+  position:relative;height:500px;overflow:hidden;
+  background:url('https://cdn.conmebol.com/wp-content/uploads/2023/10/000_322A2WL-scaled.jpg') center /cover no-repeat;
+}
+#hero-banner::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(8,8,8,.2) 0%,rgba(8,8,8,.5) 55%,rgba(8,8,8,1) 100%);
+}
+/* User pill — top right */
+.hero-user{
+  position:absolute;top:16px;right:40px;z-index:3;
+  display:flex;align-items:center;gap:10px;
+}
+/* Title bar — pinned to bottom of banner, above tabs */
+.hero-title-bar{
+  position:absolute;bottom:0;left:0;right:0;z-index:3;
+  display:flex;align-items:center;gap:18px;
+  padding:16px 40px 18px;
+}
+.hero-logo{height:72px;filter:drop-shadow(0 0 20px rgba(201,168,76,.6));animation:logoPulse 4s ease-in-out infinite;flex-shrink:0}
 @keyframes logoPulse{0%,100%{filter:drop-shadow(0 0 10px rgba(201,168,76,.3))}50%{filter:drop-shadow(0 0 28px rgba(201,168,76,.75))}}
-.login-title{font-family:'Bebas Neue',cursive;font-size:clamp(2rem,6vw,3.8rem);letter-spacing:8px;background:linear-gradient(135deg,var(--gold-d),var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
-.login-sub{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:8px;color:var(--gold);margin:4px 0 28px;text-align:center}
-.login-box{background:var(--gray);border:1px solid var(--gold-d);padding:28px 32px;width:min(360px,90vw);display:flex;flex-direction:column;gap:16px}
-.login-box h2{font-family:'Bebas Neue',cursive;font-size:1.4rem;letter-spacing:4px;color:var(--gold);text-align:center;margin-bottom:4px}
-.lfield{display:flex;flex-direction:column;gap:6px}
-.lfield label{font-family:'Oswald',sans-serif;font-size:.65rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
-.lfield input{background:var(--gray2);border:1px solid var(--gray3);color:var(--white);padding:10px 12px;font-family:'Montserrat',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s}
-.lfield input:focus{border-color:var(--gold)}
-.login-err{font-size:.7rem;color:#e55;font-family:'Oswald',sans-serif;letter-spacing:1px;text-align:center;min-height:16px}
-.login-btn{font-family:'Oswald',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;padding:11px;background:var(--gold);color:var(--black);border:none;cursor:pointer;font-weight:700;transition:all .22s;margin-top:4px}
-.login-btn:hover{background:var(--gold-l);transform:translateY(-1px)}
-.login-hint{font-size:.62rem;color:var(--muted);text-align:center;font-family:'Oswald',sans-serif;letter-spacing:1px}
-.login-hint span{color:var(--gold-d)}
+.hero-text h1{font-family:'Bebas Neue',cursive;font-size:clamp(1.8rem,4.5vw,3.5rem);letter-spacing:8px;background:linear-gradient(135deg,var(--gold-d),var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.hero-sub{font-family:'Oswald',sans-serif;font-size:.7rem;letter-spacing:8px;color:var(--gold);margin-top:3px}
+.hero-stars{color:var(--gold-d);font-size:.52rem;letter-spacing:10px;margin-bottom:2px}
+.user-name{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;color:var(--gold);background:rgba(8,8,8,.7);border:1px solid var(--gold-d);padding:5px 14px;border-radius:2px}
+.logout-btn{font-family:'Oswald',sans-serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;background:rgba(8,8,8,.7);color:var(--muted2);border:1px solid var(--gray4);cursor:pointer;transition:all .2s;border-radius:2px}
+.logout-btn:hover{color:var(--white);border-color:var(--muted2)}
 
-/* ── MAIN APP ── */
-#app{display:none}
-#app.visible{display:block}
+/* ── MAIN LAYOUT: sidebar + content ── */
+.app-layout{display:flex;gap:0;min-height:calc(100vh - 500px)}
 
-/* ── HEADER ── */
-header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;background:linear-gradient(180deg,#111 0%,transparent 100%);border-bottom:1px solid var(--gold-d)}
-.hinner{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
-.logo-img{height:80px;width:auto;animation:logoPulse 4s ease-in-out infinite;filter:drop-shadow(0 0 12px rgba(201,168,76,.45))}
-.htxt h1{font-family:'Bebas Neue',cursive;font-size:clamp(1.6rem,4.5vw,3.5rem);letter-spacing:8px;background:linear-gradient(135deg,var(--gold-d),var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-.subtitle{font-family:'Oswald',sans-serif;font-size:.7rem;letter-spacing:8px;color:var(--gold);margin-top:3px}
-.stars{color:var(--gold-d);font-size:.54rem;letter-spacing:10px;margin-bottom:2px}
-.user-pill{display:flex;align-items:center;gap:10px;margin-left:auto;padding-right:4px}
-.user-name{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;color:var(--gold);background:rgba(201,168,76,.1);border:1px solid var(--gold-d);padding:4px 12px}
-.logout-btn{font-family:'Oswald',sans-serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:transparent;color:var(--muted);border:1px solid var(--gray3);cursor:pointer;transition:all .2s}
-.logout-btn:hover{color:var(--white);border-color:var(--muted)}
+/* ── SIDEBAR (always visible leaderboard) ── */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--gray);
+  border-left:1px solid var(--gray3);
+  padding:16px 14px;
+  position:sticky;top:0;height:calc(100vh - 500px);
+  overflow-y:auto;
+}
+.sidebar-title{font-family:'Bebas Neue',cursive;font-size:1rem;letter-spacing:4px;color:var(--gold);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--gold-d);display:flex;align-items:center;gap:8px}
+.sidebar-title::before{content:'🏆';font-size:.9rem}
+.lb-row{display:flex;align-items:center;gap:8px;padding:8px 8px;border-bottom:1px solid var(--gray3);transition:background .2s;font-size:.72rem}
+.lb-row:last-child{border-bottom:none}
+.lb-row.me{background:rgba(201,168,76,.08);border-left:3px solid var(--gold)}
+.lb-row.first-place{background:var(--green-b);border-left:3px solid var(--green)}
+.lb-row.first-place .lb-sb-pts{color:#5d5}
+.lb-rank-num{font-family:'Bebas Neue',cursive;font-size:1rem;min-width:20px;text-align:center;color:var(--muted2)}
+.lb-rank-num.r1{color:#FFD700}.lb-rank-num.r2{color:#C0C0C0}.lb-rank-num.r3{color:#CD7F32}
+.lb-sb-name{flex:1;font-family:'Oswald',sans-serif;letter-spacing:1px;font-size:.7rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-sb-pts{font-family:'Bebas Neue',cursive;font-size:1.1rem;color:var(--gold)}
+.lb-sb-detail{font-size:.55rem;color:var(--muted);font-family:'Oswald',sans-serif}
+.sidebar-loading{color:var(--muted);font-size:.65rem;font-family:'Oswald',sans-serif;letter-spacing:1px;text-align:center;padding:20px 0}
+
+/* ── MAIN AREA ── */
+.main-area{flex:1;min-width:0;padding:0 40px 40px}
 
 /* ── TABS ── */
-.tabs{position:relative;z-index:10;display:flex;justify-content:center;gap:3px;padding:12px 12px 0;flex-wrap:wrap}
-.tab-btn{font-family:'Oswald',sans-serif;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;padding:7px 15px;border:1px solid var(--gold-d);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
-.tab-btn.active,.tab-btn:hover{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:700}
+.tabs{display:flex;gap:0;padding:16px 0 0;border-bottom:1px solid var(--gray3);margin-bottom:0;flex-wrap:wrap}
+.tab-btn{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;padding:10px 20px;border:none;border-bottom:2px solid transparent;background:transparent;color:var(--muted2);cursor:pointer;transition:all .2s;margin-bottom:-1px}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab-btn:hover:not(.active){color:var(--white);border-bottom-color:var(--gray4)}
 
 /* ── CONTENT ── */
-.content{position:relative;z-index:10;padding:12px 12px 40px;max-width:1600px;margin:0 auto}
-.tab-panel{display:none}.tab-panel.active{display:block}
-.gold-div{height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px 0}
-.controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
-.btn{font-family:'Oswald',sans-serif;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;padding:9px 20px;border:2px solid;cursor:pointer;transition:all .22s}
-.btn-gold{background:var(--gold);color:var(--black);border-color:var(--gold);box-shadow:0 0 14px rgba(201,168,76,.3)}
-.btn-gold:hover{background:var(--gold-l);box-shadow:0 0 22px rgba(201,168,76,.55);transform:translateY(-1px)}
+.tab-panel{display:none;padding-top:20px}.tab-panel.active{display:block}
+.gold-div{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px 0}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.btn{font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;padding:8px 18px;border:1px solid;cursor:pointer;transition:all .22s;border-radius:2px}
+.btn-gold{background:var(--gold);color:var(--black);border-color:var(--gold);box-shadow:0 0 14px rgba(201,168,76,.25)}
+.btn-gold:hover{background:var(--gold-l);transform:translateY(-1px)}
 .btn-outline{background:transparent;color:var(--gold);border-color:var(--gold-d)}
 .btn-outline:hover{background:rgba(201,168,76,.1);border-color:var(--gold)}
-.btn-green{background:transparent;color:#4a9;border-color:#2a6;font-size:.7rem}
-.btn-green:hover{background:rgba(68,170,136,.12);border-color:#4a9}
+.btn-green{background:transparent;color:#4a9;border-color:#2a6}
+.btn-green:hover{background:rgba(68,170,136,.1);border-color:#4a9}
+.btn-danger{background:transparent;color:#c55;border-color:#633}
+.btn-danger:hover{background:rgba(180,50,50,.12);border-color:#c55;color:#e66}
 
-/* ── GROUPS ── */
-.groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(262px,1fr));gap:10px}
-.group-card{background:var(--gray);border:1px solid var(--gray3);border-top:3px solid var(--gold-d);padding:11px;transition:border-color .2s}
-.group-card:hover{border-top-color:var(--gold)}
-.group-title{font-family:'Bebas Neue',cursive;font-size:1.15rem;letter-spacing:4px;color:var(--gold);margin-bottom:7px}
-.gtable{width:100%;border-collapse:collapse;font-size:.67rem}
-.gtable th{color:var(--muted);font-family:'Oswald',sans-serif;letter-spacing:1px;font-size:.56rem;text-transform:uppercase;padding:3px 4px;border-bottom:1px solid var(--gray3);text-align:center}
+/* ── GROUPS GRID: 3 per row ── */
+/* ── GROUP SUBTABS — same style as main tabs ── */
+.group-tabs-nav{
+  display:flex;flex-wrap:wrap;gap:0;
+  border-bottom:1px solid var(--gray3);
+  margin-bottom:20px;
+}
+.group-tab-btn{
+  font-family:'Oswald',sans-serif;font-size:.82rem;letter-spacing:3px;text-transform:uppercase;
+  padding:9px 18px;border:none;border-bottom:2px solid transparent;
+  background:transparent;color:var(--muted2);cursor:pointer;transition:all .18s;
+  margin-bottom:-1px;
+}
+.group-tab-btn:hover:not(.active){color:var(--white);border-bottom-color:var(--gray4)}
+.group-tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* ── GROUP PANEL CONTENT ── */
+.group-content{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+@media(max-width:800px){.group-content{grid-template-columns:1fr;gap:16px}}
+
+/* ── GROUP CARD ── */
+.group-card{background:var(--gray2);border:1px solid var(--gray3);border-radius:4px;padding:20px}
+.group-title{font-family:'Bebas Neue',cursive;font-size:1.6rem;letter-spacing:5px;color:var(--gold);margin-bottom:14px}
+
+/* ── STANDINGS TABLE ── */
+.gtable{width:100%;border-collapse:collapse;font-size:.75rem;margin-bottom:12px}
+.gtable th{color:var(--muted2);font-family:'Oswald',sans-serif;letter-spacing:2px;font-size:.58rem;text-transform:uppercase;padding:4px 6px;border-bottom:1px solid var(--gray4);text-align:center}
 .gtable th:first-child{text-align:left}
-.gtable td{padding:4px 4px;text-align:center;vertical-align:middle}
+.gtable td{padding:6px 6px;text-align:center;vertical-align:middle;font-size:.75rem}
 .gtable td:first-child{text-align:left}
-.gtable tr.q{background:rgba(201,168,76,.08)}
-.gtable tr.q td:first-child{border-left:3px solid var(--gold);padding-left:3px}
-.tname{display:inline-flex;align-items:center;gap:4px}
-.flag-img{width:20px;height:13px;object-fit:cover;border:1px solid rgba(255,255,255,.1);flex-shrink:0;border-radius:1px}
-.pts{font-weight:700;color:var(--gold-l)}
-.host-b{display:inline-block;font-size:.4rem;font-family:'Oswald',sans-serif;background:var(--gold-d);color:var(--black);padding:1px 3px;margin-left:2px;vertical-align:middle}
+.gtable tr.q{background:rgba(201,168,76,.07)}
+.gtable tr.q td:first-child{border-left:2px solid var(--gold);padding-left:5px}
+.tname{display:inline-flex;align-items:center;gap:6px}
+.flag-img{width:26px;height:17px;object-fit:cover;border:1px solid rgba(255,255,255,.1);flex-shrink:0;border-radius:1px}
+.pts{font-weight:700;color:var(--gold-l);font-size:.82rem}
 
 /* ── MATCH ROW ── */
-.match-list{display:flex;flex-direction:column;gap:3px;margin-top:6px}
-.mrow{display:flex;align-items:center;gap:3px;padding:4px 6px;border:1px solid var(--gray3);font-size:.64rem;position:relative;transition:background .2s}
-.mrow.open{background:var(--gray2)}
-.mrow.closed{background:rgba(30,30,30,.5)}
-.mrow.hit-exact{background:linear-gradient(135deg,var(--gold-d),rgba(240,208,128,.25),rgba(201,168,76,.2));border-color:var(--gold)}
+.match-list{display:flex;flex-direction:column;gap:6px}
+.mrow{display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid var(--gray3);font-size:.82rem;position:relative;transition:background .2s;border-radius:3px}
+.mrow.open{background:var(--gray3)}
+.mrow.closed{background:rgba(20,20,20,.5)}
+.mrow.hit-exact{background:linear-gradient(135deg,rgba(139,105,20,.3),rgba(240,208,128,.1));border-color:var(--gold)}
 .mrow.hit-winner{background:var(--green-b);border-color:var(--green)}
 .mrow.hit-miss{background:var(--red-b);border-color:#7a1a1a}
-.mteam{flex:1;font-family:'Oswald',sans-serif;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:3px}
+.mteam{flex:1;font-family:'Oswald',sans-serif;letter-spacing:.8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px;font-size:.88rem}
 .mteam.r{justify-content:flex-end;flex-direction:row-reverse}
-.mscore{display:flex;align-items:center;gap:2px;font-family:'Bebas Neue',cursive;font-size:.92rem;color:var(--gold);flex-shrink:0;min-width:44px;justify-content:center}
-.sdash{color:var(--muted);font-size:.7rem}
-
-/* Score inputs — text type, no arrows */
-.sinput{width:20px;text-align:center;background:transparent;border:none;border-bottom:1px solid var(--gold-d);color:var(--gold-l);font-family:'Bebas Neue',cursive;font-size:.95rem;padding:0;outline:none;-webkit-appearance:none;appearance:none}
+.mscore{display:flex;align-items:center;gap:5px;font-family:'Bebas Neue',cursive;font-size:1.3rem;color:var(--gold);flex-shrink:0;min-width:64px;justify-content:center}
+.sdash{color:var(--muted);font-size:.9rem}
+.sinput{width:28px;text-align:center;background:transparent;border:none;border-bottom:2px solid var(--gold-d);color:var(--gold-l);font-family:'Bebas Neue',cursive;font-size:1.3rem;padding:0 2px;outline:none;-webkit-appearance:none}
 .sinput:focus{border-bottom-color:var(--gold)}
-.sinput::placeholder{color:var(--gray3);font-size:.75rem}
-.closed-score{font-family:'Bebas Neue',cursive;font-size:.95rem;color:var(--gold-l)}
-.lock-icon{font-size:.6rem;color:var(--muted);margin-left:2px;flex-shrink:0}
-.real-score{font-size:.55rem;color:#4a9;font-family:'Oswald',sans-serif;letter-spacing:1px;position:absolute;bottom:1px;right:4px}
+.sinput::placeholder{color:var(--gray4);font-size:.9rem}
+.closed-score{font-family:'Bebas Neue',cursive;font-size:1.3rem;color:var(--gold-l)}
+.lock-icon{font-size:.7rem;color:var(--muted);margin-left:2px;flex-shrink:0}
+.real-score{font-size:.62rem;color:#4a9;font-family:'Oswald',sans-serif;letter-spacing:1px;position:absolute;bottom:2px;right:6px}
+.match-date{font-size:.6rem;color:var(--muted);font-family:'Oswald',sans-serif;white-space:nowrap;flex-shrink:0}
 
 /* ── BRACKET ── */
 .bracket-scroll{overflow-x:auto;padding-bottom:10px}
-.bracket-outer{display:flex;align-items:stretch;min-width:980px}
+.bracket-outer{display:flex;align-items:stretch;min-width:900px}
 .bracket-half{display:flex;flex:1;min-width:0}
 .bracket-half.left{flex-direction:row}
 .bracket-half.right{flex-direction:row-reverse}
 .round-col{display:flex;flex-direction:column;flex:1;min-width:0;padding:0 3px}
-.round-hdr{font-family:'Bebas Neue',cursive;font-size:.72rem;letter-spacing:2px;color:var(--gold);text-align:center;padding-bottom:3px;border-bottom:1px solid var(--gold-d);margin-bottom:3px;white-space:nowrap}
+.round-hdr{font-family:'Bebas Neue',cursive;font-size:.72rem;letter-spacing:2px;color:var(--gold);text-align:center;padding-bottom:4px;border-bottom:1px solid var(--gold-d);margin-bottom:4px;white-space:nowrap}
 .round-matches{display:flex;flex-direction:column;justify-content:space-around;flex:1}
-.bm{background:var(--gray);border:1px solid var(--gray3);margin:2px 0}
+.bm{background:var(--gray2);border:1px solid var(--gray3);margin:2px 0;border-radius:2px}
 .bm:hover{border-color:var(--gold-d)}
-.bt{display:flex;align-items:center;padding:4px 5px;font-size:.6rem;font-family:'Oswald',sans-serif;border-bottom:1px solid var(--gray3);gap:3px;letter-spacing:.3px}
+.bt{display:flex;align-items:center;padding:5px 5px;font-size:.62rem;font-family:'Oswald',sans-serif;border-bottom:1px solid var(--gray3);gap:3px}
 .bt:last-child{border-bottom:none}
 .bt.winner{background:rgba(201,168,76,.15);color:var(--gold-l);font-weight:700}
 .bt.loser{opacity:.32}
@@ -123,7 +174,14 @@ header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;bac
 .bt-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bt-score{font-family:'Bebas Neue',cursive;font-size:.82rem;color:var(--gold);flex-shrink:0;min-width:10px;text-align:right}
 .bt-pen{font-size:.5rem;color:var(--muted);margin-left:1px}
-.final-center{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 6px;flex-shrink:0;width:155px}
+.bt-sinput{width:18px;text-align:center;background:transparent;border:none;border-bottom:1px solid var(--gold-d);color:var(--gold-l);font-family:'Bebas Neue',cursive;font-size:.85rem;padding:0;outline:none;flex-shrink:0}
+.bt-sinput:focus{border-bottom-color:var(--gold)}
+.bt-pen-row{display:flex;align-items:center;padding:3px 5px;background:rgba(201,168,76,.05);gap:3px;border-top:1px solid var(--gray3)}
+.pen-lbl{font-size:.52rem;color:var(--muted);font-family:'Oswald',sans-serif;letter-spacing:1px;white-space:nowrap;flex-shrink:0}
+.pen-btn{font-family:'Oswald',sans-serif;font-size:.52rem;letter-spacing:.5px;padding:2px 5px;background:var(--gray3);border:1px solid var(--gray3);color:var(--muted);cursor:pointer;transition:all .15s;flex:1}
+.pen-btn:hover{background:rgba(201,168,76,.2);color:var(--gold);border-color:var(--gold-d)}
+.pen-btn.active{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:700}
+.final-center{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 6px;flex-shrink:0;width:150px}
 .f-trophy{display:inline-block;font-size:3rem;animation:trophyBounce 2.5s ease-in-out infinite;filter:drop-shadow(0 0 18px rgba(201,168,76,.8));margin-bottom:3px}
 @keyframes trophyBounce{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-11px) rotate(3deg)}}
 .f-label{font-family:'Bebas Neue',cursive;font-size:.74rem;letter-spacing:3px;color:var(--gold);text-align:center;border-bottom:1px solid var(--gold-d);padding-bottom:3px;margin-bottom:3px;width:100%}
@@ -136,27 +194,24 @@ header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;bac
 
 /* ── PRODE TAB ── */
 .prode-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
-.prode-username{font-family:'Bebas Neue',cursive;font-size:2rem;letter-spacing:4px;background:linear-gradient(135deg,var(--gold-d),var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.prode-pts-badge{font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:2px;color:var(--black);background:var(--gold);padding:4px 12px;font-weight:700}
+.prode-username{font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:4px;background:linear-gradient(135deg,var(--gold-d),var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.prode-pts-badge{font-family:'Oswald',sans-serif;font-size:.68rem;letter-spacing:2px;color:var(--black);background:var(--gold);padding:4px 12px;font-weight:700;border-radius:2px}
 .prode-section{margin-bottom:22px}
 .prode-section-title{font-family:'Bebas Neue',cursive;font-size:1rem;letter-spacing:4px;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:10px}
 .prode-section-title::after{content:'';flex:1;height:1px;background:var(--gold-d)}
-.prode-match-card{background:var(--gray);border:1px solid var(--gray3);padding:8px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;transition:background .2s}
+.prode-match-card{background:var(--gray2);border:1px solid var(--gray3);padding:8px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;transition:background .2s;border-radius:2px}
 .prode-match-card.hit-exact{background:linear-gradient(135deg,rgba(139,105,20,.35),rgba(240,208,128,.12));border-color:var(--gold)}
 .prode-match-card.hit-winner{background:var(--green-b);border-color:var(--green)}
 .prode-match-card.hit-miss{background:var(--red-b);border-color:#7a1a1a}
-.prode-match-card.pending{border-color:var(--gray3)}
 .pmatch-teams{flex:1;font-family:'Oswald',sans-serif;font-size:.76rem;letter-spacing:1px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .pmatch-pred{font-family:'Bebas Neue',cursive;font-size:1.1rem;color:var(--gold-l);min-width:50px;text-align:center}
 .pmatch-real{font-family:'Bebas Neue',cursive;font-size:.85rem;color:#4a9;min-width:50px;text-align:center}
 .pmatch-real-lbl{font-family:'Oswald',sans-serif;font-size:.56rem;letter-spacing:1px;color:var(--muted)}
 .pmatch-pts{font-family:'Bebas Neue',cursive;font-size:1.2rem;color:var(--gold);min-width:30px;text-align:right}
-.pmatch-pts.p3{color:var(--gold-l)}
-.pmatch-pts.p1{color:#4a9}
-.pmatch-pts.p0{color:#c55}
-.empty-prode{color:var(--muted);font-size:.75rem;font-family:'Oswald',sans-serif;letter-spacing:2px;text-align:center;padding:30px;border:1px dashed var(--gray3)}
+.pmatch-pts.p3{color:var(--gold-l)}.pmatch-pts.p1{color:#4a9}.pmatch-pts.p0{color:#c55}
+.empty-prode{color:var(--muted);font-size:.75rem;font-family:'Oswald',sans-serif;letter-spacing:2px;text-align:center;padding:30px;border:1px dashed var(--gray4);border-radius:4px}
 
-/* ── LEADERBOARD ── */
+/* ── LEADERBOARD (full tab) ── */
 .lb-table{width:100%;border-collapse:collapse;font-size:.74rem}
 .lb-table th{font-family:'Oswald',sans-serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--gold-d);text-align:left}
 .lb-table th.num{text-align:center}
@@ -164,16 +219,16 @@ header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;bac
 .lb-table td.num{text-align:center;font-family:'Bebas Neue',cursive;font-size:.95rem;color:var(--gold-l)}
 .lb-table tr.me td{background:rgba(201,168,76,.08)}
 .lb-table tr.me td:first-child{border-left:3px solid var(--gold)}
+.lb-table tr.first-place td{background:var(--green-b)}
+.lb-table tr.first-place td:first-child{border-left:3px solid var(--green)}
 .lb-rank{font-family:'Bebas Neue',cursive;font-size:1.1rem;color:var(--muted);width:28px;text-align:center}
 .lb-rank.gold{color:#FFD700}.lb-rank.silver{color:#C0C0C0}.lb-rank.bronze{color:#CD7F32}
 .lb-name{font-family:'Oswald',sans-serif;letter-spacing:1px}
 .lb-pts{font-family:'Bebas Neue',cursive;font-size:1.3rem;color:var(--gold)}
-.lb-exact{color:var(--gold-l)}.lb-winner{color:#4a9}.lb-total{color:var(--muted)}
 
-/* ── ADMIN PANEL ── */
-.admin-panel{background:var(--gray);border:1px solid #433;padding:16px;margin-bottom:20px}
+/* ── ADMIN ── */
+.admin-panel{background:var(--gray2);border:1px solid #433;padding:16px;margin-bottom:20px;border-radius:4px}
 .admin-title{font-family:'Bebas Neue',cursive;font-size:1rem;letter-spacing:4px;color:#e88;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.admin-title::before{content:'⚙';font-size:1.2rem}
 .admin-match-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--gray3);flex-wrap:wrap;font-size:.72rem}
 .admin-match-row:last-child{border-bottom:none}
 .admin-teams{flex:1;font-family:'Oswald',sans-serif;letter-spacing:1px;min-width:180px}
@@ -183,76 +238,89 @@ header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;bac
 .admin-save-btn:hover{background:rgba(200,80,80,.15)}
 .admin-saved{color:#4a9;font-size:.6rem;font-family:'Oswald',sans-serif;letter-spacing:1px}
 
-/* ── SAVE BAR ── */
-.save-bar{position:sticky;bottom:0;z-index:50;background:linear-gradient(0deg,var(--black) 60%,transparent);padding:12px 0;text-align:center;pointer-events:none}
-.save-bar .btn{pointer-events:all}
-.save-toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;padding:8px 20px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
-.save-toast.show{opacity:1}
+/* ── MODALS ── */
+#confirm-modal{display:none;position:fixed;inset:0;z-index:450;background:rgba(0,0,0,.8);align-items:center;justify-content:center}
+#confirm-modal.on{display:flex}
+.confirm-box{background:var(--gray2);border:1px solid #633;padding:28px 32px;max-width:360px;width:88vw;text-align:center;border-radius:4px}
+.confirm-box h3{font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:4px;color:#e66;margin-bottom:10px}
+.confirm-box p{font-size:.78rem;color:var(--muted2);line-height:1.6;margin-bottom:22px;font-family:'Montserrat',sans-serif}
+.confirm-btns{display:flex;gap:10px;justify-content:center}
+.confirm-yes{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;padding:9px 22px;background:#c44;color:var(--white);border:none;cursor:pointer;transition:all .2s;border-radius:2px}
+.confirm-yes:hover{background:#e55}
+.confirm-no{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;padding:9px 22px;background:transparent;color:var(--muted2);border:1px solid var(--gray4);cursor:pointer;transition:all .2s;border-radius:2px}
+.confirm-no:hover{color:var(--white);border-color:var(--muted2)}
 
-/* ── BRACKET SCORE INPUTS ── */
-.bt-sinput{width:18px;text-align:center;background:transparent;border:none;border-bottom:1px solid var(--gold-d);color:var(--gold-l);font-family:'Bebas Neue',cursive;font-size:.88rem;padding:0;outline:none;-webkit-appearance:none;appearance:none;flex-shrink:0}
-.bt-sinput:focus{border-bottom-color:var(--gold)}
-.bt-sinput::placeholder{color:var(--gray3);font-size:.7rem}
-.bt-pen-row{display:flex;align-items:center;padding:3px 5px;background:rgba(201,168,76,.06);gap:3px;border-top:1px solid var(--gray3);flex-wrap:nowrap}
-.pen-lbl{font-size:.52rem;color:var(--muted);font-family:'Oswald',sans-serif;letter-spacing:1px;white-space:nowrap;flex-shrink:0}
-.pen-btn{font-family:'Oswald',sans-serif;font-size:.52rem;letter-spacing:.5px;padding:2px 5px;background:var(--gray3);border:1px solid var(--gray3);color:var(--muted);cursor:pointer;transition:all .15s;flex:1;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;min-width:0}
-.pen-btn:hover{background:rgba(201,168,76,.2);color:var(--gold);border-color:var(--gold-d)}
-.pen-btn.active{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:700}
-/* ── CLEAR BTN ── */
-.btn-danger{background:transparent;color:#c55;border-color:#633}
-.btn-danger:hover{background:rgba(180,50,50,.15);border-color:#c55;color:#e66}
-
-/* ── CONFETTI ── */
-#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:999;display:none}
-
-/* ── SCROLLBAR ── */
-/* ── COUNTDOWN MODAL ── */
+/* ── COUNTDOWN ── */
 #countdown-modal{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.82);align-items:center;justify-content:center}
 #countdown-modal.on{display:flex}
-.cd-box{background:var(--gray);border:1px solid var(--gold-d);padding:32px 40px;max-width:420px;width:90vw;text-align:center;position:relative;animation:cdFadeIn .4s ease}
+.cd-box{background:var(--gray2);border:1px solid var(--gold-d);padding:32px 40px;max-width:420px;width:90vw;text-align:center;position:relative;animation:cdFadeIn .4s ease;border-radius:4px}
 @keyframes cdFadeIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
-.cd-close{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;line-height:1;transition:color .2s}
+.cd-close{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;transition:color .2s}
 .cd-close:hover{color:var(--white)}
 .cd-title{font-family:'Bebas Neue',cursive;font-size:1rem;letter-spacing:5px;color:var(--gold);margin-bottom:6px}
-.cd-match{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;color:var(--muted);margin-bottom:22px}
+.cd-match{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;color:var(--muted2);margin-bottom:22px}
 .cd-match strong{color:var(--white)}
 .cd-numbers{display:flex;gap:10px;justify-content:center;margin-bottom:18px}
 .cd-unit{display:flex;flex-direction:column;align-items:center;gap:4px}
 .cd-num{font-family:'Bebas Neue',cursive;font-size:3rem;line-height:1;background:linear-gradient(135deg,var(--gold-d),var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;min-width:64px;text-align:center}
 .cd-lbl{font-family:'Oswald',sans-serif;font-size:.55rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
 .cd-sep{font-family:'Bebas Neue',cursive;font-size:2.5rem;color:var(--gold-d);line-height:1;padding-top:6px}
-.cd-btn{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;padding:9px 24px;background:var(--gold);color:var(--black);border:none;cursor:pointer;transition:all .2s;margin-top:4px}
+.cd-btn{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;padding:9px 24px;background:var(--gold);color:var(--black);border:none;cursor:pointer;transition:all .2s;margin-top:4px;border-radius:2px}
 .cd-btn:hover{background:var(--gold-l)}
 .cd-started{font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:4px;color:var(--gold);animation:champP 1.5s ease-in-out infinite}
 
-/* ── CONFIRM MODAL ── */
-#confirm-modal{display:none;position:fixed;inset:0;z-index:450;background:rgba(0,0,0,.8);align-items:center;justify-content:center}
-#confirm-modal.on{display:flex}
-.confirm-box{background:var(--gray);border:1px solid #633;padding:28px 32px;max-width:360px;width:88vw;text-align:center}
-.confirm-box h3{font-family:'Bebas Neue',cursive;font-size:1.2rem;letter-spacing:4px;color:#e66;margin-bottom:10px}
-.confirm-box p{font-size:.78rem;color:var(--muted);line-height:1.6;margin-bottom:22px;font-family:'Montserrat',sans-serif}
-.confirm-btns{display:flex;gap:10px;justify-content:center}
-.confirm-yes{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;padding:9px 22px;background:#c44;color:var(--white);border:none;cursor:pointer;transition:all .2s}
-.confirm-yes:hover{background:#e55}
-.confirm-no{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;padding:9px 22px;background:transparent;color:var(--muted);border:1px solid var(--gray3);cursor:pointer;transition:all .2s}
-.confirm-no:hover{color:var(--white);border-color:var(--muted)}
+/* ── SAVE TOAST ── */
+.save-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:2px;padding:8px 20px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none;border-radius:2px}
+.save-toast.show{opacity:1}
 
-::-webkit-scrollbar{width:5px;height:5px}
-/* ── FB LOADING OVERLAY ── */
+/* ── FB LOADING ── */
 #fb-loading{display:none;position:fixed;inset:0;z-index:600;background:rgba(8,8,8,.92);align-items:center;justify-content:center;flex-direction:column;gap:14px}
 #fb-loading.on{display:flex}
 .fb-spin{width:40px;height:40px;border:3px solid var(--gray3);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .fb-load-txt{font-family:'Bebas Neue',cursive;font-size:1.1rem;letter-spacing:5px;color:var(--gold)}
+
+/* ── LOGIN ── */
+#login-screen{position:fixed;inset:0;z-index:500;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center}
+#login-screen.hidden{display:none}
+.login-logo{height:100px;animation:logoPulse 4s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(201,168,76,.5));margin-bottom:14px}
+.login-title{font-family:'Bebas Neue',cursive;font-size:clamp(2rem,6vw,3.5rem);letter-spacing:8px;background:linear-gradient(135deg,var(--gold-d),var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+.login-sub{font-family:'Oswald',sans-serif;font-size:.72rem;letter-spacing:8px;color:var(--gold);margin:4px 0 24px;text-align:center}
+.login-box{background:var(--gray2);border:1px solid var(--gold-d);padding:28px 32px;width:min(360px,90vw);display:flex;flex-direction:column;gap:14px;border-radius:4px}
+.login-box h2{font-family:'Bebas Neue',cursive;font-size:1.4rem;letter-spacing:4px;color:var(--gold);text-align:center;margin-bottom:4px}
+.lfield{display:flex;flex-direction:column;gap:6px}
+.lfield label{font-family:'Oswald',sans-serif;font-size:.65rem;letter-spacing:3px;color:var(--muted2);text-transform:uppercase}
+.lfield input{background:var(--gray3);border:1px solid var(--gray4);color:var(--white);padding:10px 12px;font-family:'Montserrat',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s;border-radius:2px}
+.lfield input:focus{border-color:var(--gold)}
+.login-err{font-size:.7rem;color:#e55;font-family:'Oswald',sans-serif;letter-spacing:1px;text-align:center;min-height:16px}
+.login-btn{font-family:'Oswald',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;padding:11px;background:var(--gold);color:var(--black);border:none;cursor:pointer;font-weight:700;transition:all .22s;border-radius:2px}
+.login-btn:hover{background:var(--gold-l);transform:translateY(-1px)}
+.login-hint{font-size:.62rem;color:var(--muted);text-align:center;font-family:'Oswald',sans-serif;letter-spacing:1px;line-height:1.6}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:var(--black)}
 ::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:3px}
-@media(max-width:640px){.bracket-outer{min-width:820px}.groups-grid{grid-template-columns:1fr}}
+
+@media(max-width:900px){
+  .app-layout{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;border-left:none;border-top:1px solid var(--gold-d)}
+  .hero-user{right:16px;top:12px}
+  .hero-title-bar{padding:12px 16px 14px}
+  .main-area{padding:0 16px 40px}
+  .bracket-outer{min-width:820px}
+  .hero-inner{padding:0 16px}
+}
+@media(max-width:600px){
+  .main-area{padding:0 10px 40px}
+  .groups-grid{grid-template-columns:1fr}
+}
 </style>
   <!-- Firebase SDK (compat v9 — works in plain HTML without bundler) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-<canvas id="confetti-canvas"></canvas>
 <div id="confirm-modal">
   <div class="confirm-box">
     <h3>🗑 VACIAR PRODE</h3>
@@ -296,28 +364,35 @@ header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;bac
   </div>
 </div>
 <div id="app">
-  <header>
-    <div class="hinner">
-      <img class="logo-img" src="https://upload.wikimedia.org/wikipedia/en/thumb/1/17/2026_FIFA_World_Cup_emblem.svg/960px-2026_FIFA_World_Cup_emblem.svg.png" alt="FIFA WC 2026">
-      <div class="htxt">
-        <div class="stars">★ ★ ★ ★ ★</div>
+  <!-- BANNER -->
+  <div id="hero-banner">
+    <!-- User pill top-right -->
+    <div class="hero-user">
+      <span class="user-name" id="header-username"></span>
+      <button class="logout-btn" id="logout-btn">Salir</button>
+    </div>
+    <!-- Title pinned just above the main tabs -->
+    <div class="hero-title-bar">
+      <img class="hero-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/1/17/2026_FIFA_World_Cup_emblem.svg/960px-2026_FIFA_World_Cup_emblem.svg.png" alt="FIFA WC 2026">
+      <div class="hero-text">
+        <div class="hero-stars">★ ★ ★ ★ ★</div>
         <h1>FIFA WORLD CUP 2026</h1>
-        <div class="subtitle">USA · CANADA · MÉXICO</div>
-      </div>
-      <div class="user-pill">
-        <span class="user-name" id="header-username"></span>
-        <button class="logout-btn" id="logout-btn">Salir</button>
+        <div class="hero-sub">USA · CANADA · MÉXICO</div>
       </div>
     </div>
-  </header>
-  <div class="tabs" id="tabs-row">
-    <button class="tab-btn active" data-tab="grupos">Fase de Grupos</button>
-    <button class="tab-btn"        data-tab="llaves">Llaves</button>
-    <button class="tab-btn"        data-tab="prode" id="tab-btn-prode">Mi Prode</button>
-    <button class="tab-btn"        data-tab="tabla">Tabla Global</button>
-    <button class="tab-btn admin-only" id="tab-btn-admin" data-tab="admin" style="display:none">⚙ Admin</button>
   </div>
-  <div class="content">
+  <!-- MAIN LAYOUT -->
+  <div class="app-layout">
+    <!-- MAIN AREA -->
+    <div class="main-area">
+      <div class="tabs" id="tabs-row">
+        <button class="tab-btn active" data-tab="grupos">Fase de Grupos</button>
+        <button class="tab-btn"        data-tab="llaves">Eliminatorias</button>
+        <button class="tab-btn"        data-tab="prode" id="tab-btn-prode">Mi Prode</button>
+        <button class="tab-btn"        data-tab="tabla">Tabla Global</button>
+        <button class="tab-btn admin-only" id="tab-btn-admin" data-tab="admin" style="display:none">⚙ Admin</button>
+      </div>
+      <div class="content">
     <!-- GRUPOS -->
     <div id="tab-grupos" class="tab-panel active">
       <div class="gold-div"></div>
@@ -326,19 +401,20 @@ header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;bac
         <button class="btn btn-green" id="save-grupos-btn">💾 Guardar Fase de Grupos</button>
         <button class="btn btn-danger" id="clear-prode-btn">🗑 Vaciar mi Prode</button>
       </div>
-      <div id="groups-container" class="groups-grid"></div>
+      <!-- Group navigation tabs -->
+      <div class="group-tabs-nav" id="group-tabs-nav"></div>
+      <!-- Group panels (one per group) -->
+      <div id="groups-container"></div>
     </div>
     <!-- LLAVES -->
     <div id="tab-llaves" class="tab-panel">
       <div class="gold-div"></div>
       <div class="controls">
-        <button class="btn btn-green" id="save-llaves-btn">💾 Guardar Llaves</button>
+        <button class="btn btn-green" id="save-llaves-btn">💾 Guardar Eliminatorias</button>
       </div>
       <div id="bracket-info" style="background:var(--gray);border:1px solid var(--gold-d);padding:10px 14px;margin-bottom:14px;font-size:.7rem;color:var(--muted);line-height:1.7">
-        🏆 <strong style="color:var(--gold)">¿Cómo funciona la llave?</strong> 
-        Completá los resultados de un grupo entero en <em>Fase de Grupos</em> y guardá — los dos clasificados aparecerán automáticamente en su lugar de la llave.
-        Cuantos más grupos completes, más llena estará la llave. Los cruces de los <strong style="color:var(--gold)">mejores terceros</strong> se calculan cuando todos los grupos estén completos.
-        Una vez que la llave esté poblada, podés hacer click en los equipos para avanzarlos manualmente y guardar tus predicciones de eliminación directa.
+        🏆 <strong style="color:var(--gold)">¿Cómo funcionan las Eliminatorias?</strong> 
+        Completá los resultados de un grupo entero en <em>Fase de Grupos</em> y guardá — los dos clasificados aparecerán automáticamente en su lugar de las Eliminatorias.
       </div>
       <div id="bracket-progress" style="margin-bottom:10px;font-size:.65rem;font-family:'Oswald',sans-serif;letter-spacing:2px;color:var(--muted);text-align:center"></div>
       <div class="bracket-scroll"><div class="bracket-outer" id="bracket-outer"></div></div>
@@ -369,8 +445,15 @@ header{position:relative;z-index:10;text-align:center;padding:20px 20px 16px;bac
         <div id="admin-matches"></div>
       </div>
     </div>
-  </div>
-</div>
+      </div><!-- /content -->
+    </div><!-- /main-area -->
+    <!-- SIDEBAR: always-visible leaderboard -->
+    <aside class="sidebar">
+      <div class="sidebar-title">Tabla</div>
+      <div id="sidebar-tabla"><div class="sidebar-loading">Cargando...</div></div>
+    </aside>
+  </div><!-- /app-layout -->
+</div><!-- /app -->
 <div class="save-toast" id="save-toast">¡Prode guardado!</div>
 <script>
 const FLAGS={
@@ -629,8 +712,8 @@ async function doLogin() {
   err.textContent = '';
 
   try {
-    const ref  = db.collection('users').doc(name);
-    const snap = await ref.get();
+    ref  = db.collection('users').doc(name);
+    snap = await ref.get();
 
     if (snap.exists) {
       // Existing user — check password
@@ -871,8 +954,8 @@ function buildBracketFromGroups() {
     // Distribute: best 4 to left bracket matches 6-7, next 4 to right
     const setSlot = (side, matchIdx, h, a) => {
       if (!h || !a) return;
-      const m = userKO[side][matchIdx];
-      const prevH = m.h, prevA = m.a;
+      m = userKO[side][matchIdx];
+      prevH = m.h, prevA = m.a;
       m.h = h; m.a = a;
       if (m.h !== prevH || m.a !== prevA) { m.hs=''; m.as=''; m.winner=''; m.pen=null; }
     };
@@ -886,8 +969,8 @@ function buildBracketFromGroups() {
   const progressEl = document.getElementById('bracket-progress');
   if (progressEl) {
     progressEl.textContent = completedCount === 0
-      ? 'Completá grupos para poblar la llave'
-      : `${completedCount}/12 grupos completos — ${completedCount === 12 ? '¡Llave completa!' : 'seguí completando para ver más equipos'}`;
+      ? 'Completá grupos para ver las Eliminatorias'
+      : `${completedCount}/12 grupos completos — ${completedCount === 12 ? '¡Eliminatorias completas!' : 'seguí completando para ver más equipos'}`;
   }
 }
 
@@ -901,7 +984,7 @@ function saveGrupos() {
   buildBracketFromGroups();
   storage[currentUser].ko = userKO;
   fbShow('Guardando...');
-  saveStorage().then(()=>{ fbHide(); showToast('¡Fase de Grupos guardada! ✓'); }).catch(()=>{ fbHide(); showToast('Error al guardar. Reintentá.'); });
+  saveStorage().then(()=>{ fbHide(); showToast('¡Fase de Grupos guardada! ✓'); renderSidebar();; }).catch(()=>{ fbHide(); showToast('Error al guardar. Reintentá.'); });
   renderProdeTab();
   renderTabla();
   renderBracket(userKO);
@@ -911,7 +994,7 @@ function saveLlaves() {
   if (!storage[currentUser]) storage[currentUser]={scores:{},ko:{}};
   storage[currentUser].ko = userKO;
   fbShow('Guardando...');
-  saveStorage().then(()=>{ fbHide(); showToast('¡Llaves guardadas! ✓'); }).catch(()=>{ fbHide(); showToast('Error al guardar. Reintentá.'); });
+  saveStorage().then(()=>{ fbHide(); showToast('¡Eliminatorias guardadas! ✓'); renderSidebar();; }).catch(()=>{ fbHide(); showToast('Error al guardar. Reintentá.'); });
 }
 
 function saveProde() {
@@ -924,6 +1007,41 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+
+// ── SIDEBAR LEADERBOARD ──────────────────────────────────────────
+async function renderSidebar() {
+  el = document.getElementById('sidebar-tabla');
+  if (!el) return;
+  try {
+    snap = await db.collection('users').get();
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (!storage[doc.id]) storage[doc.id] = { scores: d.scores||{}, ko: d.ko||{} };
+    });
+  } catch(e) { /* offline */ }
+
+  const users = Object.keys(storage).filter(u=>storage[u]?.scores);
+  if (currentUser && !users.includes(currentUser)) users.push(currentUser);
+  const rows = users.map(u=>{ const r=calcUserPoints(u); return {...r,u}; })
+    .sort((a,b)=>b.total-a.total||b.exact-a.exact||b.winner-a.winner);
+
+  if (!rows.length) { el.innerHTML='<div class="sidebar-loading">Sin datos aún</div>'; return; }
+
+  el.innerHTML = rows.map((r,i)=>{
+    const isMe = r.u.toLowerCase()===currentUser?.toLowerCase();
+    const isFirst = i===0;
+    const rankCls = i===0?'r1':i===1?'r2':i===2?'r3':'';
+    return `<div class="lb-row${isMe?' me':''}${isFirst?' first-place':''}">
+      <span class="lb-rank-num ${rankCls}">${i+1}</span>
+      <div>
+        <div class="lb-sb-name">${r.u}</div>
+        <div class="lb-sb-detail">⭐${r.exact} ✓${r.winner}</div>
+      </div>
+      <span class="lb-sb-pts">${r.total}</span>
+    </div>`;
+  }).join('');
 }
 
 // ── COUNTDOWN ────────────────────────────────────────────────
@@ -988,12 +1106,12 @@ function clearProde() {
     showToast('⛔ El administrador cerró las predicciones.');
     return;
   }
-  const modal = document.getElementById('confirm-modal');
+  modal = document.getElementById('confirm-modal');
   if (modal) modal.classList.add('on');
 }
 
 function doClearProde() {
-  const modal = document.getElementById('confirm-modal');
+  modal = document.getElementById('confirm-modal');
   if (modal) modal.classList.remove('on');
 
   // Reset scores to empty directly — NOT via initUserGroupScores()
@@ -1012,7 +1130,7 @@ function doClearProde() {
 
 function cancelClearProde() {
   console.log('[cancelClearProde] called');
-  const modal = document.getElementById('confirm-modal');
+  modal = document.getElementById('confirm-modal');
   if (modal) modal.classList.remove('on');
 }
 
@@ -1044,7 +1162,7 @@ function computeStats(gKey, scoresArr) {
   const pts={}, gf={}, ga={};
   teams.forEach(t=>{pts[t]=0;gf[t]=0;ga[t]=0;});
   GROUPS_DEF[gKey].matches.forEach((m,i)=>{
-    const s=scoresArr[i];
+    s=scoresArr[i];
     const hs=parseInt(s.hs), as=parseInt(s.as);
     if(isNaN(hs)||isNaN(as)) return;
     gf[m.h]+=hs; ga[m.h]+=as; gf[m.a]+=as; ga[m.a]+=hs;
@@ -1060,94 +1178,424 @@ function computeStats(gKey, scoresArr) {
 //  RENDER GROUPS
 // ════════════════════════════════════════════════════════════
 function renderGroups() {
-  const c = document.getElementById('groups-container');
-  c.innerHTML='';
-  Object.keys(GROUPS_DEF).forEach(gKey=>{
-    const g = GROUPS_DEF[gKey];
-    const {pts,gf,ga,standing} = computeStats(gKey, userGroupScores[gKey]);
-    const card = document.createElement('div');
-    card.className='group-card';
+  buildGroupTabs();  // build tab buttons once
+  renderGroupPanel(activeGroupTab);  // render the active panel
+}
 
-    let rows='';
-    standing.forEach((t,i)=>{
-      const dg=gf[t]-ga[t];
-      const isHost=HOSTS.includes(t);
-      rows+=`<tr class="${i<2?'q':''}"><td><span class="tname">${flagImg(t)} ${t}${isHost?'<span class="host-b">HOST</span>':''}</span></td><td class="pts">${pts[t]}</td><td>${gf[t]}</td><td>${ga[t]}</td><td style="color:${dg>0?'#6c6':dg<0?'#c66':'var(--muted)'}">${dg>0?'+'+dg:dg}</td></tr>`;
-    });
+let activeGroupTab = 'A';
 
-    let mhtml='';
-    const order=[0,3,1,4,2,5];
-    order.forEach(idx=>{
-      const m=g.matches[idx];
-      const s=userGroupScores[gKey][idx];
-      const open=isMatchOpen(m.date);
-      const real=realResults[gKey]?.[idx];
-      const hv=s.hs===''?'':s.hs, av=s.as===''?'':s.as;
-
-      let rowClass='mrow ';
-      let content='';
-
-      if(real) {
-        // Determine hit type
-        const pHs=parseInt(hv), pAs=parseInt(av);
-        const rHs=parseInt(real.hs), rAs=parseInt(real.as);
-        const hasInput=!isNaN(pHs)&&!isNaN(pAs);
-        if(hasInput){
-          if(pHs===rHs&&pAs===rAs) rowClass+='hit-exact';
-          else {
-            const pW=pHs>pAs?'h':pHs<pAs?'a':'d';
-            const rW=rHs>rAs?'h':rHs<rAs?'a':'d';
-            rowClass += pW===rW?'hit-winner':'hit-miss';
-          }
-        } else rowClass+='closed';
-        content=`<span class="mteam">${flagImg(m.h)} ${m.h}</span>
-          <span class="mscore"><span class="closed-score">${hv||'—'}</span><span class="sdash">:</span><span class="closed-score">${av||'—'}</span></span>
-          <span class="mteam r">${m.a} ${flagImg(m.a)}</span>
-          <span class="real-score">Real: ${real.hs}–${real.as}</span>`;
-      } else if(open) {
-        rowClass+='open';
-        content=`<span class="mteam">${flagImg(m.h)} ${m.h}</span>
-          <span class="mscore">
-            <input class="sinput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="${hv}" placeholder="–" oninput="setUserScore('${gKey}',${idx},'h',this.value)" data-g="${gKey}" data-i="${idx}" data-s="h">
-            <span class="sdash">:</span>
-            <input class="sinput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="${av}" placeholder="–" oninput="setUserScore('${gKey}',${idx},'a',this.value)" data-g="${gKey}" data-i="${idx}" data-s="a">
-          </span>
-          <span class="mteam r">${m.a} ${flagImg(m.a)}</span>
-          <span style="font-size:.52rem;color:var(--muted);font-family:'Oswald',sans-serif;margin-left:2px">${formatDate(m.date,m.time)}</span>`;
-      } else {
-        rowClass+='closed';
-        content=`<span class="mteam">${flagImg(m.h)} ${m.h}</span>
-          <span class="mscore"><span class="closed-score">${hv||'—'}</span><span class="sdash">:</span><span class="closed-score">${av||'—'}</span></span>
-          <span class="mteam r">${m.a} ${flagImg(m.a)}</span>
-          <span class="lock-icon">🔒</span>`;
-      }
-      mhtml+=`<div class="${rowClass}">${content}</div>`;
-    });
-
-    card.innerHTML=`<div class="group-title">Grupo ${gKey}</div>
-      <table class="gtable"><thead><tr><th>Equipo</th><th>Pts</th><th>GF</th><th>GC</th><th>DG</th></tr></thead>
-      <tbody>${rows}</tbody></table>
-      <div class="gold-div" style="margin:5px 0"></div>
-      <div class="match-list">${mhtml}</div>`;
-    c.appendChild(card);
+function buildGroupTabs() {
+  const nav = document.getElementById('group-tabs-nav');
+  if (!nav) return;
+  // Only build once
+  if (nav.children.length === Object.keys(GROUPS_DEF).length) return;
+  nav.innerHTML = '';
+  Object.keys(GROUPS_DEF).forEach(gKey => {
+    const btn = document.createElement('button');
+    btn.className = 'group-tab-btn' + (gKey === activeGroupTab ? ' active' : '');
+    btn.textContent = gKey;
+    btn.onclick = () => switchGroupTab(gKey);
+    nav.appendChild(btn);
   });
 }
 
-function renderGroupStandingsOnly(gKey) {
-  const cards=document.querySelectorAll('.group-card');
-  const gKeys=Object.keys(GROUPS_DEF);
-  const cardEl=cards[gKeys.indexOf(gKey)];
-  if(!cardEl) return;
-  const tbody=cardEl.querySelector('tbody');
-  if(!tbody) return;
-  const{pts,gf,ga,standing}=computeStats(gKey,userGroupScores[gKey]);
-  let rows='';
-  standing.forEach((t,i)=>{
-    const dg=gf[t]-ga[t];
-    const isHost=HOSTS.includes(t);
-    rows+=`<tr class="${i<2?'q':''}"><td><span class="tname">${flagImg(t)} ${t}${isHost?'<span class="host-b">HOST</span>':''}</span></td><td class="pts">${pts[t]}</td><td>${gf[t]}</td><td>${ga[t]}</td><td style="color:${dg>0?'#6c6':dg<0?'#c66':'var(--muted)'}">${dg>0?'+'+dg:dg}</td></tr>`;
+function switchGroupTab(gKey) {
+  activeGroupTab = gKey;
+  // Update tab buttons
+  document.querySelectorAll('.group-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === gKey);
   });
-  tbody.innerHTML=rows;
+  renderGroupPanel(gKey);
+}
+
+function renderGroupPanel(gKey) {
+  const container = document.getElementById('groups-container');
+  if (!container) return;
+
+  const g = GROUPS_DEF[gKey];
+  const {pts, gf, ga, standing} = computeStats(gKey, userGroupScores[gKey]);
+
+  // Standings table
+  rows = '';
+  standing.forEach((t, i) => {
+    const dg = gf[t] - ga[t];
+    rows += `<tr class="${i < 2 ? 'q' : ''}">
+      <td><span class="tname">${flagImg(t, 26, 17)} ${t}</span></td>
+      <td class="pts">${pts[t]}</td>
+      <td>${gf[t]}</td><td>${ga[t]}</td>
+      <td style="color:${dg > 0 ? '#6c6' : dg < 0 ? '#c66' : 'var(--muted)'}">${dg > 0 ? '+' + dg : dg}</td>
+    </tr>`;
+  });
+
+  // Matches sorted by date+time
+  const order = g.matches
+    .map((m, i) => i)
+    .sort((a, b) => {
+      const da = g.matches[a].date + 'T' + (g.matches[a].time || '00:00');
+      const db_ = g.matches[b].date + 'T' + (g.matches[b].time || '00:00');
+      return da < db_ ? -1 : da > db_ ? 1 : 0;
+    });
+
+  let mhtml = '';
+  order.forEach(idx => {
+    m = g.matches[idx];
+    s = userGroupScores[gKey][idx];
+    const open = isMatchOpen(m.date);
+    const real = realResults[gKey]?.[idx];
+    const hv = s.hs === '' ? '' : s.hs;
+    const av = s.as === '' ? '' : s.as;
+    const dateLabel = formatDate(m.date, m.time);
+
+    let rowClass = 'mrow ';
+    let content = '';
+
+    if (real) {
+      const pHs = parseInt(hv), pAs = parseInt(av);
+      const rHs = parseInt(real.hs), rAs = parseInt(real.as);
+      const hasInput = !isNaN(pHs) && !isNaN(pAs);
+      if (hasInput) {
+        if (pHs === rHs && pAs === rAs) rowClass += 'hit-exact';
+        else {
+          const pW = pHs > pAs ? 'h' : pHs < pAs ? 'a' : 'd';
+          const rW = rHs > rAs ? 'h' : rHs < rAs ? 'a' : 'd';
+          rowClass += pW === rW ? 'hit-winner' : 'hit-miss';
+        }
+      } else rowClass += 'closed';
+      content = `<span class="mteam">${flagImg(m.h, 26, 17)} ${m.h}</span>
+        <span class="mscore"><span class="closed-score">${hv || '—'}</span><span class="sdash">:</span><span class="closed-score">${av || '—'}</span></span>
+        <span class="mteam r">${m.a} ${flagImg(m.a, 26, 17)}</span>
+        <span class="real-score">Real: ${real.hs}–${real.as}</span>`;
+    } else if (open) {
+      rowClass += 'open';
+      content = `<span class="mteam">${flagImg(m.h, 26, 17)} ${m.h}</span>
+        <span class="mscore">
+          <input class="sinput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="${hv}" placeholder="–"
+            oninput="setUserScore('${gKey}',${idx},'h',this.value)">
+          <span class="sdash">:</span>
+          <input class="sinput" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="2" value="${av}" placeholder="–"
+            oninput="setUserScore('${gKey}',${idx},'a',this.value)">
+        </span>
+        <span class="mteam r">${m.a} ${flagImg(m.a, 26, 17)}</span>
+        <span class="match-date">${dateLabel}</span>`;
+    } else {
+      rowClass += 'closed';
+      content = `<span class="mteam">${flagImg(m.h, 26, 17)} ${m.h}</span>
+        <span class="mscore"><span class="closed-score">${hv || '—'}</span><span class="sdash">:</span><span class="closed-score">${av || '—'}</span></span>
+        <span class="mteam r">${m.a} ${flagImg(m.a, 26, 17)}</span>
+        <span class="lock-icon">🔒</span>`;
+    }
+    mhtml += `<div class="${rowClass}">${content}</div>`;
+  });
+
+  container.innerHTML = `
+    <div class="group-content">
+      <div class="group-card">
+        <div class="group-title">Grupo ${gKey}</div>
+        <table class="gtable">
+          <thead><tr><th>Equipo</th><th>Pts</th><th>GF</th><th>GC</th><th>DG</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div class="group-card">
+        <div class="group-title" style="font-size:1.1rem;letter-spacing:3px;margin-bottom:14px">Partidos</div>
+        <div class="match-list">${mhtml}</div>
+      </div>
+    </div>`;
+}
+
+
+function setUserScore(gKey, idx, side, val) {
+  s = userGroupScores[gKey][idx];
+  clean = val.replace(/[^0-9]/g,'');
+  if (side==='h') s.hs = clean;
+  else            s.as = clean;
+  renderGroupStandingsOnly(gKey);
+}
+
+
+// ════════════════════════════════════════════════════════════
+//  BRACKET SEEDING — defines which group pos fills which R32 slot
+//  p: 0=1st, 1=2nd  |  g:null = best 3rd place (computed after all groups)
+function isGroupComplete(gKey) {
+  return userGroupScores[gKey].every(s =>
+    s.hs !== '' && s.as !== '' && !isNaN(parseInt(s.hs)) && !isNaN(parseInt(s.as))
+  );
+}
+
+function buildBracketFromGroups() {
+  // Compute standings for every complete group
+  standings = {};
+  Object.keys(GROUPS_DEF).forEach(g => {
+    if (isGroupComplete(g)) {
+      standings[g] = computeStats(g, userGroupScores[g]).standing;
+    }
+  });
+
+  completedCount = Object.keys(standings).length;
+
+  // Populate R32 slots from seeding
+  ['r32_left','r32_right'].forEach(side => {
+    BRACKET_SEEDING[side].forEach((seed, i) => {
+      m = userKO[side][i];
+      prevH = m.h, prevA = m.a;
+
+      if (seed.h.g !== null) {
+        m.h = standings[seed.h.g] ? (standings[seed.h.g][seed.h.p] || 'TBD') : 'TBD';
+      }
+      if (seed.a.g !== null) {
+        m.a = standings[seed.a.g] ? (standings[seed.a.g][seed.a.p] || 'TBD') : 'TBD';
+      }
+
+      // If either team changed, reset this match's result and cascade
+      if (m.h !== prevH || m.a !== prevA) {
+        m.hs = ''; m.as = ''; m.winner = ''; m.pen = null;
+      }
+    });
+  });
+
+  // Compute best 3rds if all 12 groups are complete
+  if (completedCount === 12) {
+    thirds = [];
+    Object.keys(GROUPS_DEF).forEach(g => {
+      const {standing, pts, gf, ga} = computeStats(g, userGroupScores[g]);
+      team = standing[2];
+      if (team) thirds.push({team, pts: pts[team], gd: gf[team]-ga[team], gf: gf[team]});
+    });
+    thirds.sort((a,b) => b.pts-a.pts || b.gd-a.gd || b.gf-a.gf || (TS[b.team]||50)-(TS[a.team]||50));
+    best8 = thirds.slice(0,8);
+
+    // Distribute: best 4 to left bracket matches 6-7, next 4 to right
+    setSlot = (side, matchIdx, h, a) => {
+      if (!h || !a) return;
+      m = userKO[side][matchIdx];
+      prevH = m.h, prevA = m.a;
+      m.h = h; m.a = a;
+      if (m.h !== prevH || m.a !== prevA) { m.hs=''; m.as=''; m.winner=''; m.pen=null; }
+    };
+    if (best8[0]) setSlot('r32_left',  6, best8[0].team, best8[1]?.team || 'TBD');
+    if (best8[2]) setSlot('r32_left',  7, best8[2].team, best8[3]?.team || 'TBD');
+    if (best8[4]) setSlot('r32_right', 6, best8[4].team, best8[5]?.team || 'TBD');
+    if (best8[6]) setSlot('r32_right', 7, best8[6].team, best8[7]?.team || 'TBD');
+  }
+
+  // Update bracket progress indicator
+  progressEl = document.getElementById('bracket-progress');
+  if (progressEl) {
+    progressEl.textContent = completedCount === 0
+      ? 'Completá grupos para ver las Eliminatorias'
+      : `${completedCount}/12 grupos completos — ${completedCount === 12 ? '¡Eliminatorias completas!' : 'seguí completando para ver más equipos'}`;
+  }
+}
+
+function saveGrupos() {
+  if (!storage[currentUser]) storage[currentUser]={scores:{},ko:{}};
+  storage[currentUser].scores = {};
+  Object.keys(userGroupScores).forEach(g => {
+    storage[currentUser].scores[g] = userGroupScores[g].map(s=>({hs:s.hs, as:s.as}));
+  });
+  // Rebuild R32 from group standings
+  buildBracketFromGroups();
+  storage[currentUser].ko = userKO;
+  fbShow('Guardando...');
+  saveStorage().then(()=>{ fbHide(); showToast('¡Fase de Grupos guardada! ✓'); renderSidebar();; }).catch(()=>{ fbHide(); showToast('Error al guardar. Reintentá.'); });
+  renderProdeTab();
+  renderTabla();
+  renderBracket(userKO);
+}
+
+function saveLlaves() {
+  if (!storage[currentUser]) storage[currentUser]={scores:{},ko:{}};
+  storage[currentUser].ko = userKO;
+  fbShow('Guardando...');
+  saveStorage().then(()=>{ fbHide(); showToast('¡Eliminatorias guardadas! ✓'); renderSidebar();; }).catch(()=>{ fbHide(); showToast('Error al guardar. Reintentá.'); });
+}
+
+function saveProde() {
+  saveGrupos();
+  saveLlaves();
+}
+
+function showToast(msg) {
+  t = document.getElementById('save-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+
+// ── SIDEBAR LEADERBOARD ──────────────────────────────────────────
+async function renderSidebar() {
+  el = document.getElementById('sidebar-tabla');
+  if (!el) return;
+  try {
+    snap = await db.collection('users').get();
+    snap.forEach(doc => {
+      d = doc.data();
+      if (!storage[doc.id]) storage[doc.id] = { scores: d.scores||{}, ko: d.ko||{} };
+    });
+  } catch(e) { /* offline */ }
+
+  users = Object.keys(storage).filter(u=>storage[u]?.scores);
+  if (currentUser && !users.includes(currentUser)) users.push(currentUser);
+  rows = users.map(u=>{ r=calcUserPoints(u); return {...r,u}; })
+    .sort((a,b)=>b.total-a.total||b.exact-a.exact||b.winner-a.winner);
+
+  if (!rows.length) { el.innerHTML='<div class="sidebar-loading">Sin datos aún</div>'; return; }
+
+  el.innerHTML = rows.map((r,i)=>{
+    isMe = r.u.toLowerCase()===currentUser?.toLowerCase();
+    isFirst = i===0;
+    rankCls = i===0?'r1':i===1?'r2':i===2?'r3':'';
+    return `<div class="lb-row${isMe?' me':''}${isFirst?' first-place':''}">
+      <span class="lb-rank-num ${rankCls}">${i+1}</span>
+      <div>
+        <div class="lb-sb-name">${r.u}</div>
+        <div class="lb-sb-detail">⭐${r.exact} ✓${r.winner}</div>
+      </div>
+      <span class="lb-sb-pts">${r.total}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── COUNTDOWN ────────────────────────────────────────────────
+// México vs Sudáfrica: 11 Jun 2026, 16:00 ART (= 19:00 UTC)
+
+_cdInterval = null;
+
+function openCountdown() {
+  modal = document.getElementById('countdown-modal');
+  modal.classList.add('on');
+  updateCountdown();
+  if (_cdInterval) clearInterval(_cdInterval);
+  _cdInterval = setInterval(updateCountdown, 1000);
+}
+
+function closeCountdown() {
+  document.getElementById('countdown-modal').classList.remove('on');
+  if (_cdInterval) { clearInterval(_cdInterval); _cdInterval = null; }
+}
+
+function updateCountdown() {
+  now  = Date.now();
+  diff = WC_START.getTime() - now;
+
+  daysEl  = document.getElementById('cd-days');
+  hoursEl = document.getElementById('cd-hours');
+  minsEl  = document.getElementById('cd-mins');
+  secsEl  = document.getElementById('cd-secs');
+  startEl = document.getElementById('cd-started');
+  numsEl  = document.querySelector('.cd-numbers');
+
+  if (diff <= 0) {
+    // Mundial already started
+    if (numsEl)  numsEl.style.display   = 'none';
+    if (startEl) startEl.style.display  = '';
+    if (_cdInterval) { clearInterval(_cdInterval); _cdInterval = null; }
+    return;
+  }
+
+  if (numsEl)  numsEl.style.display  = '';
+  if (startEl) startEl.style.display = 'none';
+
+  days  = Math.floor(diff / 86400000);
+  hours = Math.floor((diff % 86400000) / 3600000);
+  mins  = Math.floor((diff % 3600000)  / 60000);
+  secs  = Math.floor((diff % 60000)    / 1000);
+
+  if (daysEl)  daysEl.textContent  = String(days).padStart(2,'0');
+  if (hoursEl) hoursEl.textContent = String(hours).padStart(2,'0');
+  if (minsEl)  minsEl.textContent  = String(mins).padStart(2,'0');
+  if (secsEl)  secsEl.textContent  = String(secs).padStart(2,'0');
+}
+
+// ── CLEAR PRODE ──────────────────────────────────────────────────────────
+function isProdeLockedByAdmin() {
+  return window._appLocked === true;
+}
+
+function clearProde() {
+  if (isProdeLockedByAdmin()) {
+    showToast('⛔ El administrador cerró las predicciones.');
+    return;
+  }
+  modal = document.getElementById('confirm-modal');
+  if (modal) modal.classList.add('on');
+}
+
+function doClearProde() {
+  modal = document.getElementById('confirm-modal');
+  if (modal) modal.classList.remove('on');
+
+  // Reset scores to empty directly — NOT via initUserGroupScores()
+  // because that function re-reads from storage[currentUser] (the Firestore cache)
+  userGroupScores = {};
+  Object.keys(GROUPS_DEF).forEach(g => {
+    userGroupScores[g] = GROUPS_DEF[g].matches.map(() => ({hs:'', as:''}));
+  });
+  userKO = buildEmptyKO();
+
+  renderGroups();
+  buildBracketFromGroups();
+  renderBracket(userKO);
+  showToast('Prode vaciado — recordá guardar si querés conservar los cambios.');
+}
+
+function cancelClearProde() {
+  console.log('[cancelClearProde] called');
+  modal = document.getElementById('confirm-modal');
+  if (modal) modal.classList.remove('on');
+}
+
+// ── ADMIN LOCK ───────────────────────────────────────────────────────────
+async function toggleAdminLock() {
+  locked = window._appLocked === true;
+  window._appLocked = !locked;
+  try {
+    await db.collection('config').doc('app').set({ locked: !locked }, { merge: true });
+  } catch(e) { console.error('toggleLock error:', e); }
+  renderAdmin();
+  showToast(locked ? '🔓 Predicciones desbloqueadas.' : '🔒 Predicciones cerradas para todos los usuarios.');
+}
+
+// ════════════════════════════════════════════════════════════
+//  FLAGS & MISC HELPERS
+// ════════════════════════════════════════════════════════════
+function flagImg(name, w=20, h=13) {
+  src = FLAGS[name]||'';
+  if (!src) return `<span style="display:inline-block;width:${w}px;height:${h}px;background:var(--gray3);border-radius:1px"></span>`;
+  return `<img class="flag-img" src="${src}" style="width:${w}px;height:${h}px" alt="${name}">`;
+}
+
+// ════════════════════════════════════════════════════════════
+//  STANDINGS
+// ════════════════════════════════════════════════════════════
+function computeStats(gKey, scoresArr) {
+  teams = GROUPS_DEF[gKey].teams;
+  pts={}, gf={}, ga={};
+  teams.forEach(t=>{pts[t]=0;gf[t]=0;ga[t]=0;});
+  GROUPS_DEF[gKey].matches.forEach((m,i)=>{
+    s=scoresArr[i];
+    hs=parseInt(s.hs), as=parseInt(s.as);
+    if(isNaN(hs)||isNaN(as)) return;
+    gf[m.h]+=hs; ga[m.h]+=as; gf[m.a]+=as; ga[m.a]+=hs;
+    if(hs>as) pts[m.h]+=3;
+    else if(hs===as){pts[m.h]+=1;pts[m.a]+=1;}
+    else pts[m.a]+=3;
+  });
+  standing=[...teams].sort((a,b)=>(pts[b]-pts[a])||(gf[b]-ga[b]-(gf[a]-ga[a]))||(gf[b]-gf[a])||((TS[b]||50)-(TS[a]||50)));
+  return{pts,gf,ga,standing};
+}
+
+// ════════════════════════════════════════════════════════════
+//  RENDER GROUPS
+// ════════════════════════════════════════════════════════════
+
+
+function renderGroupStandingsOnly(gKey) {
+  // Only re-render if this is the active tab
+  if (gKey === activeGroupTab) {
+    renderGroupPanel(gKey);
+  }
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1166,24 +1614,24 @@ function calcPoints(predHs, predAs, realHs, realAs) {
 }
 
 function renderProdeTab() {
-  const content = document.getElementById('prode-content');
-  const saved = storage[currentUser]?.scores || {};
+  content = document.getElementById('prode-content');
+  saved = storage[currentUser]?.scores || {};
   let totalPts = 0;
   let html = '';
 
   Object.keys(GROUPS_DEF).forEach(gKey => {
-    const g = GROUPS_DEF[gKey];
+    g = GROUPS_DEF[gKey];
     const groupMatches = [];
-    const order=[0,3,1,4,2,5];
+    order=[0,3,1,4,2,5];
     order.forEach(idx => {
-      const m = g.matches[idx];
-      const s = (saved[gKey])?.[idx] || userGroupScores[gKey][idx];
-      const hs = s.hs!==''?parseInt(s.hs):null;
+      m = g.matches[idx];
+      s = (saved[gKey])?.[idx] || userGroupScores[gKey][idx];
+      hs = s.hs!==''?parseInt(s.hs):null;
       const as_ = s.as!==''?parseInt(s.as):null;
       const hasPred = hs!==null && as_!==null && !isNaN(hs) && !isNaN(as_);
       if (!hasPred) return; // only show filled predictions
-      const real = realResults[gKey]?.[idx];
-      let pts=null, hitClass='pending';
+      real = realResults[gKey]?.[idx];
+      pts=null, hitClass='pending';
       if (real) {
         pts = calcPoints(hs, as_, parseInt(real.hs), parseInt(real.as));
         totalPts += pts;
@@ -1229,17 +1677,17 @@ function renderProdeTab() {
 //  TABLA GLOBAL
 // ════════════════════════════════════════════════════════════
 function calcUserPoints(username) {
-  const saved = storage[username]?.scores || {};
+  saved = storage[username]?.scores || {};
   let total=0, exact=0, winner=0;
   Object.keys(GROUPS_DEF).forEach(gKey=>{
     GROUPS_DEF[gKey].matches.forEach((_,idx)=>{
-      const s = saved[gKey]?.[idx];
+      s = saved[gKey]?.[idx];
       if(!s) return;
-      const hs=parseInt(s.hs), as=parseInt(s.as);
+      hs=parseInt(s.hs), as=parseInt(s.as);
       if(isNaN(hs)||isNaN(as)) return;
-      const real = realResults[gKey]?.[idx];
+      real = realResults[gKey]?.[idx];
       if(!real) return;
-      const pts = calcPoints(hs,as,parseInt(real.hs),parseInt(real.as));
+      pts = calcPoints(hs,as,parseInt(real.hs),parseInt(real.as));
       total+=pts;
       if(pts===3) exact++;
       else if(pts===1) winner++;
@@ -1249,22 +1697,22 @@ function calcUserPoints(username) {
 }
 
 async function renderTabla() {
-  const container = document.getElementById('tabla-container');
+  container = document.getElementById('tabla-container');
   container.innerHTML = '<div style="text-align:center;color:var(--muted);font-family:Oswald,sans-serif;letter-spacing:2px;padding:20px;font-size:.7rem">Cargando tabla...</div>';
 
   // Fetch all users from Firestore
   try {
-    const snap = await db.collection('users').get();
+    snap = await db.collection('users').get();
     snap.forEach(doc => {
-      const d = doc.data();
+      d = doc.data();
       if (!storage[doc.id]) storage[doc.id] = { scores: d.scores||{}, ko: d.ko||{} };
     });
   } catch(e) { console.warn('renderTabla fetch error:', e); }
 
-  const users = Object.keys(storage).filter(u=>storage[u]?.scores);
+  users = Object.keys(storage).filter(u=>storage[u]?.scores);
   if (currentUser && !users.includes(currentUser)) users.push(currentUser);
 
-  const rows = users.map(u=>{
+  rows = users.map(u=>{
     const {total,exact,winner} = calcUserPoints(u);
     return {u, total, exact, winner};
   }).sort((a,b)=>b.total-a.total||b.exact-a.exact||b.winner-a.winner);
@@ -1274,14 +1722,14 @@ async function renderTabla() {
     return;
   }
 
-  let html=`<table class="lb-table"><thead><tr>
+  html=`<table class="lb-table"><thead><tr>
     <th style="width:32px">#</th><th>Usuario</th>
     <th class="num">Pts</th><th class="num">Exactos</th><th class="num">Ganador</th>
   </tr></thead><tbody>`;
 
   rows.forEach((r,i)=>{
     const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
-    const isMe = r.u.toLowerCase()===currentUser?.toLowerCase();
+    isMe = r.u.toLowerCase()===currentUser?.toLowerCase();
     html+=`<tr class="${isMe?'me':''}">
       <td><div class="lb-rank ${rankClass}">${i+1}</div></td>
       <td class="lb-name">${r.u}</td>
@@ -1298,21 +1746,28 @@ async function renderTabla() {
 //  ADMIN PANEL
 // ════════════════════════════════════════════════════════════
 function renderAdmin() {
-  const container = document.getElementById('admin-matches');
-  const locked = localStorage.getItem('wc2026_locked') === '1';
-  let html = `<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:10px 12px;background:var(--gray2);border:1px solid #433">
+  container = document.getElementById('admin-matches');
+  locked = localStorage.getItem('wc2026_locked') === '1';
+  html = `<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:10px 12px;background:var(--gray2);border:1px solid #433">
     <span style="font-family:'Oswald',sans-serif;font-size:.7rem;letter-spacing:2px;color:${locked?'#e88':'#4a9'}">${locked?'🔒 Predicciones CERRADAS para usuarios':'🔓 Predicciones ABIERTAS para usuarios'}</span>
     <button onclick="toggleAdminLock()" style="font-family:'Oswald',sans-serif;font-size:.65rem;letter-spacing:2px;padding:5px 14px;background:${locked?'#2a6':'#633'};color:var(--white);border:none;cursor:pointer">${locked?'Desbloquear':'Cerrar predicciones'}</button>
   </div>`;
   Object.keys(GROUPS_DEF).forEach(gKey=>{
-    const g = GROUPS_DEF[gKey];
+    g = GROUPS_DEF[gKey];
     html += `<div style="margin-bottom:14px"><div style="font-family:'Bebas Neue',cursive;font-size:.9rem;letter-spacing:3px;color:#e88;margin-bottom:4px">Grupo ${gKey}</div>`;
-    const order=[0,3,1,4,2,5];
+    // Sort matches by date then time
+    order = g.matches
+      .map((m, i) => i)
+      .sort((a, b) => {
+        da = g.matches[a].date + 'T' + (g.matches[a].time||'00:00');
+        db_ = g.matches[b].date + 'T' + (g.matches[b].time||'00:00');
+        return da < db_ ? -1 : da > db_ ? 1 : 0;
+      });
     order.forEach(idx=>{
-      const m=g.matches[idx];
-      const real=realResults[gKey]?.[idx];
+      m=g.matches[idx];
+      real=realResults[gKey]?.[idx];
       const rH=real?real.hs:'', rA=real?real.as:'';
-      const open=isMatchOpen(m.date);
+      open=isMatchOpen(m.date);
       html+=`<div class="admin-match-row">
         <span class="admin-teams">${flagImg(m.h,16,11)} ${m.h} vs ${m.a} ${flagImg(m.a,16,11)}</span>
         <span style="font-size:.58rem;color:var(--muted);font-family:'Oswald',sans-serif">${formatDate(m.date)}${open?' 🔓':' 🔒'}</span>
@@ -1331,7 +1786,7 @@ function renderAdmin() {
 function saveReal(gKey, idx) {
   const hEl=document.getElementById(`adm_${gKey}_${idx}_h`);
   const aEl=document.getElementById(`adm_${gKey}_${idx}_a`);
-  const hs=hEl.value.replace(/[^0-9]/g,'');
+  hs=hEl.value.replace(/[^0-9]/g,'');
   const as=aEl.value.replace(/[^0-9]/g,'');
   if(hs===''&&as==='') {
     // Clear
@@ -1374,7 +1829,7 @@ function bmHtml(m,koKey,idx){
   const fh=knownH?`<img class="bt-flag" src="${FLAGS[m.h]}" alt="${m.h}">`:'<span style="width:16px;display:inline-block"></span>';
   const fa=knownA?`<img class="bt-flag" src="${FLAGS[m.a]}" alt="${m.a}">`:'<span style="width:16px;display:inline-block"></span>';
   const bothTeams = m.h && m.h!=='TBD' && m.a && m.a!=='TBD';
-  const hs=parseInt(m.hs), as=parseInt(m.as);
+  hs=parseInt(m.hs), as=parseInt(m.as);
   const bothFilled = bothTeams && !isNaN(hs) && !isNaN(as) && m.hs!=='' && m.as!=='';
   const isTie = bothFilled && hs===as;
   const wh=m.winner===m.h&&m.h!=='TBD'?'winner':m.winner&&m.h!=='TBD'?'loser':'';
@@ -1427,13 +1882,13 @@ function renderBracket(ko){
 
 // ── BRACKET SCORE & PENALTY LOGIC ──────────────────────────────────────
 function setBracketScore(koKey, idx, side, val) {
-  const m = userKO[koKey][idx];
+  m = userKO[koKey][idx];
   if (!m) return;
-  const clean = val.replace(/[^0-9]/g,'');
+  clean = val.replace(/[^0-9]/g,'');
   if (side==='h') m.hs = clean; else m.as = clean;
   // Compute winner from scores
-  const hs = parseInt(m.hs), as = parseInt(m.as);
-  const bothFilled = !isNaN(hs) && !isNaN(as) && m.hs!=='' && m.as!=='';
+  hs = parseInt(m.hs), as = parseInt(m.as);
+  bothFilled = !isNaN(hs) && !isNaN(as) && m.hs!=='' && m.as!=='';
   if (bothFilled && hs !== as) {
     const newWinner = hs > as ? m.h : m.a;
     const changed = m.winner !== newWinner;
@@ -1447,12 +1902,12 @@ function setBracketScore(koKey, idx, side, val) {
 }
 
 function setBracketPenWinner(koKey, idx, side) {
-  const m = userKO[koKey][idx];
+  m = userKO[koKey][idx];
   if (!m) return;
-  const hs = parseInt(m.hs), as = parseInt(m.as);
+  hs = parseInt(m.hs), as = parseInt(m.as);
   if (isNaN(hs) || isNaN(as) || hs !== as) return; // only valid on ties
-  const newWinner = side==='h' ? m.h : m.a;
-  const changed = m.winner !== newWinner;
+  newWinner = side==='h' ? m.h : m.a;
+  changed = m.winner !== newWinner;
   m.winner = newWinner;
   m.pen = '4-3p';
   updateBracketMatchUI(koKey, idx);
@@ -1460,22 +1915,22 @@ function setBracketPenWinner(koKey, idx, side) {
 }
 
 function updateBracketMatchUI(koKey, idx) {
-  const m = userKO[koKey][idx];
-  const hs = parseInt(m.hs), as = parseInt(m.as);
-  const bothFilled = !isNaN(hs) && !isNaN(as) && m.hs!=='' && m.as!=='';
-  const isTie = bothFilled && hs === as;
+  m = userKO[koKey][idx];
+  hs = parseInt(m.hs), as = parseInt(m.as);
+  bothFilled = !isNaN(hs) && !isNaN(as) && m.hs!=='' && m.as!=='';
+  isTie = bothFilled && hs === as;
   // Update row classes
   const rowH = document.getElementById(`bt-h-${koKey}-${idx}`);
   const rowA = document.getElementById(`bt-a-${koKey}-${idx}`);
   if (rowH) rowH.className = `bt ${m.winner===m.h&&m.h!=='TBD'?'winner':m.winner&&m.h!=='TBD'?'loser':''}`;
   if (rowA) rowA.className = `bt ${m.winner===m.a&&m.a!=='TBD'?'winner':m.winner&&m.a!=='TBD'?'loser':''}`;
   // Show/hide pen row
-  const penRow = document.getElementById(`btpen-${koKey}-${idx}`);
+  penRow = document.getElementById(`btpen-${koKey}-${idx}`);
   if (penRow) {
     penRow.style.display = (isTie || m.pen) ? 'flex' : 'none';
     penRow.querySelectorAll('.pen-btn').forEach((btn,i)=>{
       const side = i===0?'h':'a';
-      const team = side==='h'?m.h:m.a;
+      team = side==='h'?m.h:m.a;
       btn.classList.toggle('active', m.winner===team && !!m.pen);
     });
   }
@@ -1508,13 +1963,20 @@ function propagateBracketWinner(koKey, idx, winner) {
 //  CONFETTI
 // ════════════════════════════════════════════════════════════
 function launchConfetti(){
-  const canvas=document.getElementById('confetti-canvas');
+  // Create canvas dynamically to avoid layout impact
+  let canvas=document.getElementById('confetti-canvas');
+  if(!canvas){
+    canvas=document.createElement('canvas');
+    canvas.id='confetti-canvas';
+    canvas.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:999;display:none';
+    document.body.appendChild(canvas);
+  }
   canvas.style.display='block';
   canvas.width=window.innerWidth;canvas.height=window.innerHeight;
   const ctx=canvas.getContext('2d');
-  const center=document.querySelector('.final-center');
+  center=document.querySelector('.final-center');
   let ox=window.innerWidth/2,oy=180;
-  if(center){const r=center.getBoundingClientRect();ox=r.left+r.width/2;oy=r.top+40;}
+  if(center){r=center.getBoundingClientRect();ox=r.left+r.width/2;oy=r.top+40;}
   const cols=['#C9A84C','#F0D080','#FFFFFF','#8B6914','#FFD700','#E8E8E8','#DAA520'];
   const pieces=[];
   for(let i=0;i<200;i++){const ang=Math.random()*Math.PI*2,spd=4+Math.random()*9;pieces.push({x:ox,y:oy,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd-6,r:3+Math.random()*7,color:cols[Math.floor(Math.random()*cols.length)],rot:Math.random()*360,rotV:(Math.random()-.5)*9,shape:Math.random()>.4?'rect':'circle'});}
@@ -1547,10 +2009,11 @@ function switchTab(tab,btn){
 
 function renderAll(){
   renderGroups();
-  buildBracketFromGroups();   // restore bracket from saved group scores
+  buildBracketFromGroups();
   renderBracket(userKO || buildEmptyKO());
   renderProdeTab();
   renderTabla();
+  renderSidebar();
 }
 </script>
 </body>
